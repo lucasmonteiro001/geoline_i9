@@ -1,0 +1,259 @@
+<template name="cliente">
+    {{> pageHeading title='Lista de clientes' }}
+
+    <div class="wrapper wrapper-content white-bg animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="pull-right btAdd">
+                    <a href="{{pathFor 'clienteAdd'}}" class="btn btn-primary">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Adicionar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                {{> clienteList}}
+            </div>
+        </div>
+
+    </div>
+
+</template>
+
+<template name="clienteAdd">
+    {{> pageHeading title='Cadastrar cliente' }}
+
+
+    <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+        <form class="form-horizontal row-border" id="userForm" data-toggle="validator" role="form">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel-body">
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="telefone">Telefone/Cel:</label>
+                            <div class="col-md-10">
+                                <input type="text" id="telefone" name="telefone" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="nome">Informe um nome</label>
+                            <div class="col-md-10">
+                                <input type="text" id="nome" name="nome" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="Email">Meu Email</label>
+                            <div class="col-md-10">
+                                <input type="text" id="Email" name="Email" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="endereco">Informe o Endereço</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" rows="7" id="endereco" name="endereco"></textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="pull-right btAdd">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <a href="{{pathFor 'cliente'}}" class="btn">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</template>
+
+
+<template name="clienteEdit">
+    {{ clientes }}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-12">
+            <h2 id="nomeObjeto"></h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{pathFor route=home}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{pathFor route=cliente}}">Lista de clientes</a>
+                </li>
+
+                <li class="active">
+                    <strong id="bc-nomeObjeto"></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+
+    <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+        <form class="form-horizontal row-border" id="userForm" data-toggle="validator" role="form">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel-body">
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="nome">Informe um nome</label>
+                            <div class="col-md-10">
+                                <input type="text" id="nome" name="nome" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="telefone">Telefone/Cel:</label>
+                            <div class="col-md-10">
+                                <input type="text" id="telefone" name="telefone" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="endereco">Informe o Endereço</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" rows="7" id="endereco" name="endereco"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="Email">Meu Email</label>
+                            <div class="col-md-10">
+                                <input type="text" id="Email" name="Email" class="form-control">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="pull-right btAdd">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <a href="{{pathFor 'clienteView'}}/{{clienteID}}" class="btn">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</template>
+
+
+<template name="clienteView">
+    {{ clientes }}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-8">
+            <h2 id="nomeObjeto"></h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{pathFor route=home}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{pathFor route=cliente}}">Lista de clientes</a>
+                </li>
+
+                <li class="active">
+                    <strong id="bc-nomeObjeto"></strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-4">
+            <div class="pull-right">
+                <a id="btn-criar-chamado-voltar" class="btn btn-default" href="{{pathFor 'cliente'}}">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    Voltar
+                </a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">
+                        Ações <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a id="linkEdit" href="{{pathFor 'clienteEdit'}}/{{clienteID}}"><i
+                                class="icon icon-pencil"></i>
+                            Editar...</a></li>
+                        <li class="divider"></li>
+                        <li><a id="linkExcluir" href="#!" value="{{clienteID}}"><i class="icon icon-pencil"></i>
+                            Excluir...</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+        <div class="row form-horizontal row-border">
+            <div class="col-lg-12">
+                <div class="panel-body">
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="nome">Informe um nome</label>
+                        <div class="col-md-10">
+                            <span id="nome"> </span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="endereco">Informe um endereco</label>
+                        <div class="col-md-10">
+                            <span id="endereco"> </span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="Email">Informe um Email</label>
+                        <div class="col-md-10">
+                            <span id="Email"> </span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="telefone">Informe um telefone</label>
+                        <div class="col-md-10">
+                            <span id="telefone"> </span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</template>
+
+
+<template name="clienteList">
+    {{> reactiveTable settings=settings}}
+</template>
+
+<template name="clienteTmpl">
+    <a href="{{pathFor 'clienteView'}}/{{_id}}">  {{nome}} </a>
+</template>

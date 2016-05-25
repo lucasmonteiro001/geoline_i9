@@ -1,0 +1,65 @@
+<template name="default">
+    {{>bertAlert}}
+
+
+    <div id="wrapper">
+        {{#if loggingIn}}
+            {{> loading}}
+        {{else}}
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav metismenu" id="side-menu">
+                        {{#if currentUser}}
+                        <li class="nav-header">
+
+                            <div class="dropdown profile-element">
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong
+                                    class="font-bold">{{email}}</strong>
+                             </span> <span class="text-muted text-xs block">Usuário Logado <b class="caret"></b></span> </span>
+                                </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="#">Item A</a></li>
+                                    <li><a href="#">Item B</a></li>
+                                    <li class="divider"></li>
+                                    <li class="logout"><a href="#">Logout</a></li>
+                                </ul>
+                            </div>
+                            <div class="logo-element">
+                                Synergia
+                            </div>
+                        </li>
+
+
+                            {{> authenticatedNavigation}}
+                        {{else}}
+                            {{> publicNavigation}}
+                        {{/if}}
+
+                    </ul>
+
+                </div>
+            </nav>
+            <div id="page-wrapper" class="gray-bg">
+                {{>header}}
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    {{#if authenticated}}
+                        {{#unless redirectAuthenticated}}
+                            {{> Template.dynamic template=yield}}
+                        {{/unless}}
+                    {{else}}
+                        {{#unless redirectPublic}}
+                            {{> Template.dynamic template=yield}}
+                        {{/unless}}
+                    {{/if}}
+                </div>
+                <!--TODO colocar dinovo-->
+                <!--TIREI O FOOTER-->
+            </div>
+
+
+        {{/if}}
+
+    </div><!--wrapper-->
+</template>

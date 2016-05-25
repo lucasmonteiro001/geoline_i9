@@ -1,0 +1,5 @@
+<template name="publicNavigation">
+            <li class="{{currentRoute 'login'}}"><a href="{{pathFor 'login'}}"><i class="fa fa-diamond"></i> <span class="nav-label">Login</span></a></li>
+            <li class="{{currentRoute 'signup'}}"><a href="{{pathFor 'signup'}}"><i class="fa fa-diamond"></i> <span class="nav-label">Registrar</span></a></li>
+            {{> publicmenu }}
+</template>

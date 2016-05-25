@@ -1,0 +1,56 @@
+{
+  "name": "i9",
+  "version": "1.0.0",
+  "description": "Aplicativo de pesquisa",
+  "scripts": {
+    "start": "meteor --settings settings-development.json",
+    "test": "meteor test --driver-package practicalmeteor:mocha --port 5000",
+    "test2": "mocha ./tests --compilers js:babel-register",
+    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
+    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests",
+    "staging": "meteor deploy staging.meteor.com --settings settings-development.json",
+    "production": "meteor deploy production.meteor.com --settings settings-production.json"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chimp": "^0.33.1",
+    "faker": "^3.1.0",
+    "mocha": "^2.5.1",
+    "sinon": "^1.17.4",
+    "sinon-chai": "^2.8.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "plugins": [
+      "meteor"
+    ],
+    "extends": [
+      "plugin:meteor/guide"
+    ],
+    "globals": {
+      "$": false,
+      "Accounts": false,
+      "Bert": false,
+      "browser": false,
+      "expect": false,
+      "Factory": false,
+      "Meteor": false,
+      "Roles": false,
+      "server": false,
+      "SimpleSchema": false,
+      "ValidatedMethod": false
+    },
+    "rules": {}
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.3",
+    "jquery-validation": "^1.15.0",
+    "meteor-node-stubs": "^0.2.3",
+    "synergia-scaffolding": "1.0.4"
+  }
+}

@@ -1,0 +1,60 @@
+<template name="users">
+    {{#if isInRole 'administrador'}}
+
+        {{> pageHeading title='Gerenciar Usúarios' }}
+
+        <div class="wrapper wrapper-content white-bg animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center m-t-lg">
+                        <h1>
+                            Exemplo de Página de Gestão de usuários
+                        </h1>
+                    </div>
+                        <h4>Exemplo de uso de montagem de uma tabela referente a Users Collection</h4>
+                        <div>
+                            <table id="usersTable" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>email</th>
+                                    <th>grupo</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {{#each users}}
+                                    <tr>
+                                        <td id="email">{{#if isCurrentUser _id}}
+                                            <label class="label label-success">You!</label>{{/if}}{{emails.[0].address}}
+                                        </td>
+                                        <td>
+                                            <select id="role" disabled="{{disableIfAdmin this._id}}">
+                                                <option selected='{{selected roles.[0] "administrador"}}'>administrador</option>
+                                                <option selected='{{selected roles.[0] "comum"}}'>comum</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <br>
+
+                        <h4>Exemplo de uso de uma tabela reativa. O pacote utilizado eh o ReactiveTable</h4>
+                        {{> reactiveTable settings=settings}}
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+    {{/if}}
+
+</template>
+

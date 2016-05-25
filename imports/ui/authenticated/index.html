@@ -1,0 +1,86 @@
+<template name="index">
+
+    <div>
+
+        <style>
+            pre {
+                display: inline;
+                padding: 2px;
+            }
+            .nota {
+                color: red;
+                font-weight: bold;
+            }
+            .pasta {
+                padding: 2px;
+                background: #f5f5f5;
+                border-radius: 5px;
+                color: #333;
+            }
+        </style>
+        {{> pageHeading title='Página Principal' }}
+
+        <div class="wrapper wrapper-content white-bg animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center m-t-lg">
+
+                        <h1>
+                            Projeto Meteor-Base - Página Principal
+                        </h1>
+                    </div>
+
+                        <h4>Página permitida somente para usuários autenticados.</h4>
+                        <p>O arquivo para localização das rotas está em:
+                        <pre>/imports/startup/client/routes</pre>
+                        </p>
+                        <br>
+
+                        <h4>Template padrão</h4>
+                        <p>Todas as páginas utilizam como base o template padrão. O template está localizado em:
+                        <pre>/imports/ui/layouts/default.html</pre><br>
+                        Além disso, o arquivo default.js contém metodos para fazer o redirecionamento. Eh verificado se os usuários
+                        estão logados ou não.
+                        </p>
+                        <br>
+
+                        <h4>Criação de uma Collection</h4>
+                        <p>Nessa página eh mostrado como se inscrever em uma publicação. Aqui, inscrevemos na publicação Documents.</p>
+                        <p>Como padrão, para cada Collection eh criada uma pasta dentro de
+                        <pre>/imports/api/[nomeDaCollecion]</pre><br>
+                        <span class="nota">Nota: </span> Deve-se seguir o padrão da estrutura, de pastas e nomes, de alguma das collections já criadas.
+                        </p>
+                        <p>Ao criar a collection dentro da pasta <span class="pasta">api/</span>, eh necessário torná-la disponível para acesso, para tal,
+                            modifique algum dos arquivos de rotas (já mostrados no primeiro tópico dessa página).</p>
+                        <br>
+
+                        <h4>Views para a Collection Documents</h4>
+                        <p>Após definir a collection dentro da pasta de <span class="pasta">api/</span> eh necessário criar as views para a collection. Para tal,
+                            crie uma pasta com o nome da collection dentro de:
+                        <pre>/imports/ui/</pre>
+                        </p>
+                        <p><span class="nota">Nota: </span> A pasta deve ficar dentro ou de <span class="pasta">authenticated/</span>
+                            ou <span class="pasta">public/</span>. Tal definição se
+                            deve ao fato que na nossa estrutura, as views são separadas em públicas e autenticadas.</p>
+
+                    </div>
+                    <br>
+                    <div>
+
+                        <h3>Documents Collection</h3>
+                        Abaixo, são mostrados os documentos que foram carregados do Banco de Dados.
+                        {{#each docs}}
+                            <li>{{title}}</li>
+                        {{/each}}
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+</template>
