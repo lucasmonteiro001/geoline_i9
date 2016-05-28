@@ -11,7 +11,7 @@ Pesquisas.schema = new SimpleSchema({
         unique: true
     },
     entrevistadores: {
-        type: String,
+        type: [String],
         label: 'Entrevistadores associados',
         optional: true
     },

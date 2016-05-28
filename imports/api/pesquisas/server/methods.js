@@ -4,7 +4,7 @@ import {Meteor} from 'meteor/meteor';
 Meteor.methods({
     'pesquisas.insert' ( dataObj ) {
 
-        dataObj.userId = this.userId;
+        // dataObj.userId = Meteor.userId();
 
         check(dataObj, Pesquisas.simpleSchema());
 

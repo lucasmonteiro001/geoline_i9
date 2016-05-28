@@ -55,37 +55,29 @@
                         </div>
                         <div class="form-group">
                             <label for="candidatos">Candidatos</label>
-                            <br>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="candidatos" value="candidato1">candidato1
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="candidatos" value="candidato2">candidato2
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="candidatos" value="candidato3">candidato3
-                            </label>
+                            <input type="text" name="candidatos" id="candidatos" class="form-control"
+                                      placeholder="Nome dos candidatos separados por ;">
+
                         </div>
                         <div class="form-group">
                             <label for="bairros">Bairros</label>
-                            <br>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="bairros" value="bairro1">bairro1
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="bairros" value="bairro2">bairro2
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="bairros" value="bairro3">bairro3
-                            </label>
+                            <input type="text" name="bairros" id="bairros" class="form-control"
+                                   placeholder="Nome dos bairros separados por ;">
                         </div>
                         <div class="form-group">
-                            <label for="dataInicio"><span class="pull-left">Data de inicio</span></label>
-                            <input type="date" name="dataInicio" class="form-control">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="dataInicio"><span class="pull-left">Data de inicio</span></label>
+                                    <input type="date" name="dataInicio" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="dataFim"><span class="pull-left">Data de fim</span></label>
+                                    <input type="date" name="dataFim" class="form-control">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="dataFim"><span class="pull-left">Data de fim</span></label>
-                            <input type="date" name="dataFim" class="form-control">
+
                         </div>
 
                     </div>

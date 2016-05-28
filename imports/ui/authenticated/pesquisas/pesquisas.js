@@ -1,8 +1,9 @@
 import {Template} from 'meteor/templating';
 import './pesquisas.html';
 import '../../globals/page-heading.html';
-import { Pesquisas } from '../../../api/pesquisas/pesquisas.js'
+import { Pesquisas } from '../../../api/pesquisas/pesquisas.js';
 import {FlowRouter} from 'meteor/kadira:flow-router';
+import {Users} from '../../../api/users/users'
 
 
 let template;
@@ -34,9 +35,43 @@ Template.pesquisas.helpers({
 
 //=============== INICIO PESQUISAS ADD ==================//
 
-Template.pesquisasAdd.onCreated(() => {
+Template.pesquisasAdd.onCreated(function () {
 
-    //Faz alguma coisa ao criar o template de inserção
+    Template.instance().subscribe("Entrevistadores");
+
+    Template.instance().entrevistadores = () => {
+        return Users.find({roles: "entrevistador"});
+    }
+
+    this.autorun(function () {
+
+        let entrevistadores = Template.instance().entrevistadores().fetch();
+
+        $(".token-input-list-custom").remove();
+
+        $("#entrevistadores").tokenInput(
+            entrevistadores,
+            {
+                propertyToSearch: "nome",
+                theme: "custom",
+                hintText: "Pesquise pelo nome",
+                noResultsText: "Nenhum resultado encontrado",
+                searchingText: "Procurando...",
+                minChars: 3,
+                resultsFormatter:
+                    function(item){
+                        return '<li>' + item.nome + '</li>'
+                    },
+                tokenFormatter:
+                    function(item){
+                        return '<li><p>' +  item.nome + '</p></li>'
+                    },
+                preventDuplicates: true,
+                tokenValue: "_id",
+                allowTabOut: true
+            }
+        );
+    });
 
 });
 
@@ -49,26 +84,35 @@ Template.pesquisasAdd.events({
     'submit form' (event, template) {
 
         template = Template.instance();
-        
+
 
         event.preventDefault();
 
-        let nome = $('[name="nome"]').val(),
-            status = $('[name="status"]:checked').val(),
-            numMaxEntrevistados = $('[name="numMaxEntrevistados"]').val(),
-            // entrevistadores = $('#entrevistadores').tokenInput("get"),
-            entrevistadores = ["algum"],
-            candidatos = $('[name="candidatos"]:checked').map(function(i, val) {
-                return $(val).val()
-            }),
-            bairros = $('[name="bairros"]:checked').map(function(i, val) {
-                return $(val).val()
-            }),
-            dataInicio = $('[name="dataInicio"]').val(),
-            dataFim = $('[name="dataFim"]').val();
+        let nome                = $('[name="nome"]').val(),
+            status              = $('[name="status"]:checked').val(),
+            numMaxEntrevistados = parseInt($('[name="numMaxEntrevistados"]').val()),
+            entrevistadores     = $('#entrevistadores').tokenInput("get"),
+            dataInicio          = $('[name="dataInicio"]').val(),
+            dataFim             = $('[name="dataFim"]').val(),
+            candidatos          = $('[name="candidatos"]').val(),
+            bairros             = $('[name="bairros"]').val();
 
-        candidatos = candidatos.toArray();
-        bairros = bairros.toArray();
+
+        // valor booleano para saber se a pesquisa esta aberta ou fechada
+        (status === "aberta") ? (status = true) : (status = false);
+
+        dataInicio = new Date(dataInicio);
+
+        dataFim = new Date(dataFim);
+
+        candidatos = candidatos.toString().trim().split(";");
+
+        bairros = bairros.trim().split(";");
+
+        // salva no array de entrevistadores a id de cada objeto
+        entrevistadores = entrevistadores.map(function (val) {
+            return val.ID;
+        })
 
         const pesquisasData = {
             nome: nome,
@@ -253,8 +297,6 @@ Template.pesquisasList.onCreated(() => {
 
     Meteor.subscribe('Pesquisas');
 
-
-
 });
 
 Template.pesquisasList.helpers({
@@ -273,10 +315,23 @@ Template.pesquisasList.helpers({
             showColumnToggles: true,
             multiColumnSort: true,
             fields: [
-                {key:'nome', label:'Informe um nome', tmpl: Template.pesquisasTmpl},
-                {key:'endereco', label:'Informe o Endere�o'},
-                {key:'telefone', label:'Telefone/Cel:'},
-                {key:'Email', label:'Meu Email'}
+                {key:'nome', label:'Pesquisa', tmpl: Template.pesquisasTmpl},
+                {key:'status', label:'Status', fn: function(val) {
+                    if(val)
+                        return "Aberta";
+                    else
+                        return "Fechada";
+                }},
+                {key:'numMaxEntrevistados', label:'# máximo de entrevistados'},
+                {key:'entrevistadores', label:'# de entrevistadores associados', fn: function(val) {
+                    return val.length;
+                }},
+                {key:'candidatos', label:'# de candidatos incluídos na pesquisa', fn: function(val) {
+                    return val.length;
+                }},
+                {key:'bairros', label:'# de bairros incluídos na pesquisa', fn: function(val) {
+                    return val.length;
+                }}
             ]
         };
     }
