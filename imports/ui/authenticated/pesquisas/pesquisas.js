@@ -75,6 +75,28 @@ Template.pesquisasAdd.onCreated(function () {
 
 });
 
+Template.pesquisasAdd.onRendered(() => {
+
+    let candidatos = $("#candidatos").tagging();
+    let bairros = $("#bairros").tagging();
+
+    $tag_box = candidatos[0];
+    $tag = bairros[0];
+
+    $tag_box.on( "remove:after", function ( el, text, tagging ) {
+
+        // limpa a zona de insercao
+        $('.type-zone').val("");
+
+    });
+
+    $tag.on( "remove:after", function ( el, text, tagging ) {
+
+        // limpa a zona de insercao
+        $('.type-zone').val("");
+
+    });
+});
 
 
 Template.pesquisasAdd.events({
@@ -94,8 +116,8 @@ Template.pesquisasAdd.events({
             entrevistadores     = $('#entrevistadores').tokenInput("get"),
             dataInicio          = $('[name="dataInicio"]').val(),
             dataFim             = $('[name="dataFim"]').val(),
-            candidatos          = $('[name="candidatos"]').val(),
-            bairros             = $('[name="bairros"]').val();
+            candidatos          = $('#candidatos').tagging( "getTags" ),
+            bairros             = $('#bairros').tagging( "getTags" );
 
 
         // valor booleano para saber se a pesquisa esta aberta ou fechada
@@ -104,10 +126,6 @@ Template.pesquisasAdd.events({
         dataInicio = new Date(dataInicio);
 
         dataFim = new Date(dataFim);
-
-        candidatos = candidatos.toString().trim().split(";");
-
-        bairros = bairros.trim().split(";");
 
         // salva no array de entrevistadores a id de cada objeto
         entrevistadores = entrevistadores.map(function (val) {
