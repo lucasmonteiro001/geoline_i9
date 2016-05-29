@@ -191,29 +191,33 @@
 
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="endereco">Informe o Endere�o</label>
+                            <label class="col-md-2 control-label" for="status">Status</label>
                             <div class="col-md-10">
-                                <textarea class="form-control" rows="7" id="endereco" name="endereco"></textarea>
-                            </div>
-                        </div>
-
-
-
-
-                        <div class="form-group">
-                            <label class="col-md-2 control-label" for="telefone">Telefone/Cel:</label>
-                            <div class="col-md-10">
-                                <input type="text" id="telefone" name="telefone" class="form-control" >
+                                <label class="radio-inline">
+                                    <input type="radio" value="aberta" name="status" id="status-aberta">Aberta
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="fechada" name="status" id="status-fechada">Fechada
+                                </label>
                             </div>
                         </div>
 
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="Email">Meu Email</label>
+                            <label class="col-md-2 control-label" for="numMaxEntrevistados">Numero maximo de entrevistados</label>
                             <div class="col-md-10">
-                                <input type="text" id="Email" name="Email" class="form-control" >
+                                <input type="number" id="numMaxEntrevistados" name="numMaxEntrevistados" class="form-control" >
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="entrevistadores">Entrevistadores</label>
+                            <div class="col-md-10">
+                                <input type="text" id="entrevistadores" name="entrevistadores" class="form-control" >
+                            </div>
+                        </div>
+
+
 
                     </div>
                 </div>
@@ -284,39 +288,46 @@
 
 
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="nome">Informe um nome</label>
-                        <div class="col-md-10">
+                        <label class="col-md-2 control-label" for="nome">Pesquisa</label>
+                        <div class="col-md-12">
                             <span id="nome"> </span>
                         </div>
                     </div>
 
-
-
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="endereco">Informe um endereco</label>
-                        <div class="col-md-10">
-                            <span id="endereco"> </span>
+                        <label class="col-md-2 control-label" for="status">Status</label>
+                        <div class="col-md-12">
+                            <span id="status"> </span>
                         </div>
                     </div>
 
-
-
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="Email">Informe um Email</label>
-                        <div class="col-md-10">
-                            <span id="Email"> </span>
+                        <label class="col-md-2 control-label" for="numMaxEntrevistados">Numero maximo de entrevistados</label>
+                        <div class="col-md-12">
+                            <span id="numMaxEntrevistados"> </span>
                         </div>
                     </div>
 
-
-
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="telefone">Informe um telefone</label>
-                        <div class="col-md-10">
-                            <span id="telefone"> </span>
+                        <label class="col-md-2 control-label" for="entrevistadores">Entrevistadores</label>
+                        <div class="col-md-12">
+                            <span id="entrevistadores"> </span>
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="candidatos">Candidatos</label>
+                        <div class="col-md-12">
+                            <span id="candidatos"> </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="bairros">Bairros</label>
+                        <div class="col-md-12">
+                            <span id="bairros"> </span>
+                        </div>
+                    </div>
 
 
                 </div>

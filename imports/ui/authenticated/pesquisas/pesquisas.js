@@ -164,49 +164,62 @@ Template.pesquisasAdd.events({
 
 });
 
+//=============== FIM PESQUISAS ADD ==================//
+
+
+//=============== INICIO PESQUISAS VIEW ==================//
+
 var updateFields = function(template) {
 
     var id = FlowRouter.getParam('_id');
     const pesquisass = Pesquisas.findOne({_id: id});
     if (pesquisass && template.view.isRendered) {
-        template.find('[id="nomeObjeto"]').textContent = pesquisass.nome;
-        template.find('[id="bc-nomeObjeto"]').textContent = pesquisass.nome;
+
         template.find('[id="nome"]').value = pesquisass.nome;
-        template.find('[id="endereco"]').value = pesquisass.endereco;
-        template.find('[id="telefone"]').value = pesquisass.telefone;
-        template.find('[id="Email"]').value = pesquisass.Email;
+
+        if(pesquisass.status) {
+            document.getElementById("status-aberta").click()
+        }
+        else {
+            document.getElementById("status-fechada").click();
+        }
+
+        template.find('[id="numMaxEntrevistados"]').value = pesquisass.numMaxEntrevistados;
+
     }
 
 };
 
 var updateSpans = function(template) {
 
-    var id = FlowRouter.getParam('_id');
+    let id = FlowRouter.getParam('_id');
+
     const pesquisass = Pesquisas.findOne({_id: id});
+
     if (pesquisass && template.view.isRendered) {
-        template.find('[id="nomeObjeto"]').textContent = pesquisass.nome;
-        template.find('[id="bc-nomeObjeto"]').textContent = pesquisass.nome;
+
         template.find('[id="nome"]').textContent = pesquisass.nome;
-        template.find('[id="endereco"]').textContent = pesquisass.endereco;
-        template.find('[id="telefone"]').textContent = pesquisass.telefone;
-        template.find('[id="Email"]').textContent = pesquisass.Email;
+        template.find('[id="status"]').textContent = (pesquisass.status) ? "Aberta" : "Fechada";
+        template.find('[id="numMaxEntrevistados"]').textContent = pesquisass.numMaxEntrevistados;
+        template.find('[id="entrevistadores"]').textContent =
+            pesquisass.entrevistadores.map(function(val) {
+                let entrevistador = Users.findOne({_id: val});
+                return entrevistador.nome;
+            }).join(", ");
+        template.find('[id="candidatos"]').textContent = pesquisass.candidatos.join(", ");
+        template.find('[id="bairros"]').textContent = pesquisass.bairros.join(", ");
 
     }
 
 }
 
-//=============== FIM PESQUISAS ADD ==================//
-
-
-//=============== INICIO PESQUISAS VIEW ==================//
-
 Template.pesquisasView.onCreated(() => {
-    Meteor.subscribe('Pesquisas');
-
+    Template.instance().subscribe('Pesquisas', FlowRouter.getParam('_id'));
+    Template.instance().subscribe('Entrevistadores');
 });
 
 Template.pesquisasView.onRendered(() => {
-    var id = FlowRouter.getParam('_id');
+    let id = FlowRouter.getParam('_id');
     Template.instance().pesquisasNome = "";
     Template.instance().pesquisasID = id;
     updateSpans(Template.instance());
@@ -250,12 +263,61 @@ Template.pesquisasView.events({
 
 //=============== INICIO PESQUISAS EDIT ==================//
 
-Template.pesquisasEdit.onCreated(() => {
+Template.pesquisasEdit.onCreated(function () {
 
-    template = Template.instance();
+    let template = Template.instance();
+
+    template.subscribe('Pesquisas', {
+
+        onReady: function() {
+
+            template.pesquisa = Pesquisas.findOne({_id: FlowRouter.getParam('_id')});
+
+            template.subscribe("Entrevistadores", {
+
+                onReady: function() {
+
+                    template.entrevistadores = () => {
+                        return Users.find({roles: "entrevistador", _id: { $in : template.pesquisa.entrevistadores}});
+                    };
+
+                    template.autorun(function () {
+
+                        let entrevistadores = template.entrevistadores().fetch();
+
+                        $(".token-input-list-custom").remove();
+
+                        $("#entrevistadores").tokenInput(
+                            entrevistadores,
+                            {
+                                propertyToSearch: "nome",
+                                theme: "custom",
+                                hintText: "Pesquise pelo nome",
+                                noResultsText: "Nenhum resultado encontrado",
+                                searchingText: "Procurando...",
+                                minChars: 3,
+                                resultsFormatter:
+                                    function(item){
+                                        return '<li>' + item.nome + '</li>'
+                                    },
+                                tokenFormatter:
+                                    function(item){
+                                        return '<li><p>' +  item.nome + '</p></li>'
+                                    },
+                                preventDuplicates: true,
+                                tokenValue: "_id",
+                                allowTabOut: true,
+                                prePopulate: entrevistadores
+                            }
+                        );
+                    });
+                }
+            });
 
 
-    Meteor.subscribe('pesquisas');
+        }
+    });
+
 
 });
 
@@ -313,7 +375,7 @@ Template.pesquisasEdit.events({
 
 Template.pesquisasList.onCreated(() => {
 
-    Meteor.subscribe('Pesquisas');
+    Template.instance().subscribe('Pesquisas');
 
 });
 
