@@ -17,10 +17,10 @@ Meteor.methods({
     'pesquisas.update' ( id,dataObj ) {
 
         check(id, String);
-        check(dataObj,{nome: String, endereco: String, telefone: String, Email: String});
+        check(dataObj, Pesquisas.simpleSchema());
 
         Pesquisas.update( id,{
-            $set: { nome: dataObj.nome, endereco: dataObj.endereco, telefone: dataObj.telefone, Email: dataObj.Email },
+            $set: dataObj
         });
     },
     'pesquisas.delete'(id) {

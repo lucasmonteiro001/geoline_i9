@@ -8,6 +8,11 @@ import {Users} from '../../../api/users/users'
 
 let template;
 
+const TAG_CONFIG = {
+    "no-spacebar":true,
+    "case-sensitive":true
+};
+
 //=============== INICIO PESQUISAS ==================//
 
 Template.pesquisas.onCreated(() => {
@@ -77,8 +82,8 @@ Template.pesquisasAdd.onCreated(function () {
 
 Template.pesquisasAdd.onRendered(() => {
 
-    let candidatos = $("#candidatos").tagging();
-    let bairros = $("#bairros").tagging();
+    let candidatos = $("#candidatos").tagging(TAG_CONFIG);
+    let bairros = $("#bairros").tagging(TAG_CONFIG);
 
     $tag_box = candidatos[0];
     $tag = bairros[0];
@@ -169,27 +174,6 @@ Template.pesquisasAdd.events({
 
 //=============== INICIO PESQUISAS VIEW ==================//
 
-var updateFields = function(template) {
-
-    var id = FlowRouter.getParam('_id');
-    const pesquisass = Pesquisas.findOne({_id: id});
-    if (pesquisass && template.view.isRendered) {
-
-        template.find('[id="nome"]').value = pesquisass.nome;
-
-        if(pesquisass.status) {
-            document.getElementById("status-aberta").click()
-        }
-        else {
-            document.getElementById("status-fechada").click();
-        }
-
-        template.find('[id="numMaxEntrevistados"]').value = pesquisass.numMaxEntrevistados;
-
-    }
-
-};
-
 var updateSpans = function(template) {
 
     let id = FlowRouter.getParam('_id');
@@ -263,32 +247,77 @@ Template.pesquisasView.events({
 
 //=============== INICIO PESQUISAS EDIT ==================//
 
+var updateFields = function(template) {
+
+
+    if (template.view.isRendered) {
+
+        document.getElementById("nome").value = template.pesquisa.nome;
+
+        if(template.pesquisa.status) {
+            document.getElementById("status-aberta").click()
+        }
+        else {
+            document.getElementById("status-fechada").click();
+        }
+
+        document.getElementById("numMaxEntrevistados").value = template.pesquisa.numMaxEntrevistados;
+
+        let candidatos = $("#candidatos"), bairros = $("#bairros");
+
+        // se os boxes de tag nao foram instanciados
+        if($('.tagging').length === 0) {
+            candidatos = $("#candidatos").tagging(TAG_CONFIG);
+            bairros = $("#bairros").tagging(TAG_CONFIG);
+        }
+
+        let candidatos_box = candidatos[0],
+            bairros_box = bairros[0];
+
+        $(candidatos_box).tagging("removeAll");
+        $(candidatos_box).tagging( "add", template.pesquisa.candidatos );
+        $(candidatos_box).on( "remove:after", function () {
+            // limpa a zona de insercao
+            $('.type-zone').tagging("emptyInput");
+        });
+
+        $(bairros_box).tagging("removeAll");
+        $(bairros_box).tagging( "add", template.pesquisa.bairros );
+        $(bairros_box).on( "remove:after", function () {
+            // limpa a zona de insercao
+            $('.type-zone').tagging("emptyInput");
+
+        });
+    }
+};
+
 Template.pesquisasEdit.onCreated(function () {
 
     let template = Template.instance();
 
-    template.subscribe('Pesquisas', {
+    template.subscribe('Pesquisas', FlowRouter.getParam('_id'), {
 
         onReady: function() {
-
-            template.pesquisa = Pesquisas.findOne({_id: FlowRouter.getParam('_id')});
 
             template.subscribe("Entrevistadores", {
 
                 onReady: function() {
 
-                    template.entrevistadores = () => {
-                        return Users.find({roles: "entrevistador", _id: { $in : template.pesquisa.entrevistadores}});
-                    };
-
                     template.autorun(function () {
 
-                        let entrevistadores = template.entrevistadores().fetch();
+                        console.log("Rodou o this!");
+
+                        template.pesquisa = Pesquisas.findOne({_id: FlowRouter.getParam('_id')});
+
+                        template.entrevistadoresSelecionados =
+                            Users.find({roles: "entrevistador", _id: { $in : template.pesquisa.entrevistadores}}).fetch();
+
+                        template.entrevistadores = Users.find({roles: "entrevistador"}).fetch();
 
                         $(".token-input-list-custom").remove();
 
                         $("#entrevistadores").tokenInput(
-                            entrevistadores,
+                            template.entrevistadores,
                             {
                                 propertyToSearch: "nome",
                                 theme: "custom",
@@ -307,9 +336,11 @@ Template.pesquisasEdit.onCreated(function () {
                                 preventDuplicates: true,
                                 tokenValue: "_id",
                                 allowTabOut: true,
-                                prePopulate: entrevistadores
+                                prePopulate: template.entrevistadoresSelecionados
                             }
                         );
+
+                        updateFields(template);
                     });
                 }
             });
@@ -322,7 +353,7 @@ Template.pesquisasEdit.onCreated(function () {
 });
 
 Template.pesquisasEdit.onRendered(() => {
-    updateFields(Template.instance());
+    // updateFields(Template.instance());
 
 });
 
@@ -342,27 +373,58 @@ Template.pesquisasEdit.events({
 
     'submit form' (event, template) {
 
+        event.preventDefault();
+
         template = Template.instance();
 
 
+        let id                  = FlowRouter.getParam('_id'),
+            nome                = $('[name="nome"]').val(),
+            status              = $('[name="status"]:checked').val(),
+            numMaxEntrevistados = parseInt($('[name="numMaxEntrevistados"]').val()),
+            entrevistadores     = $('#entrevistadores').tokenInput("get"),
+            dataInicio          = $('[name="dataInicio"]').val(),
+            dataFim             = $('[name="dataFim"]').val(),
+            candidatos          = $('#candidatos').tagging( "getTags" ),
+            bairros             = $('#bairros').tagging( "getTags" );
 
-        event.preventDefault();
-        const id = FlowRouter.getParam('_id');
+
+        // valor booleano para saber se a pesquisa esta aberta ou fechada
+        (status === "aberta") ? (status = true) : (status = false);
+
+
+        //TODO consertar as datas
+        dataInicio = new Date();
+
+        dataFim = new Date();
+
+        // salva no array de entrevistadores a id de cada objeto
+        entrevistadores = entrevistadores.map(function (val) {
+            return val.ID;
+        })
+
         const pesquisasData = {
-            nome: template.find('[id="nome"]').value.trim(),
-            endereco: template.find('[id="endereco"]').value.trim(),
-            telefone: template.find('[id="telefone"]').value.trim(),
-            Email: template.find('[id="Email"]').value.trim()
+            nome: nome,
+            status: status,
+            numMaxEntrevistados: numMaxEntrevistados,
+            entrevistadores:entrevistadores,
+            candidatos:candidatos,
+            bairros:bairros,
+            dataInicio: dataInicio,
+            dataFim: dataFim
         };
 
-        Meteor.call('pesquisas.update',id, pesquisasData, (error) => {
+        Meteor.call('pesquisas.update', id, pesquisasData, (error) => {
+
             if (error) {
+
                 alert(error.reason);
-            } else {
-                FlowRouter.go('/pesquisasView/'+id);
+            }
+            else {
+
+                FlowRouter.go('pesquisas');
             }
         });
-
 
     }
 
