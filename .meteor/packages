@@ -50,3 +50,4 @@ fortawesome:fontawesome
 jquery
 less
 arillo:flow-router-helpers
+momentjs:moment

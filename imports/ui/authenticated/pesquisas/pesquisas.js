@@ -13,6 +13,15 @@ const TAG_CONFIG = {
     "case-sensitive":true
 };
 
+const SUB_ENTREVISTADOR = {
+    filter : {
+        roles: "entrevistador"
+    },
+    projection: {
+        fields: { _id: 1, emails: 1, roles: 1, nome: 1 }
+    }
+}
+
 //=============== INICIO PESQUISAS ==================//
 
 Template.pesquisas.onCreated(() => {
@@ -42,7 +51,7 @@ Template.pesquisas.helpers({
 
 Template.pesquisasAdd.onCreated(function () {
 
-    Template.instance().subscribe("Entrevistadores");
+    Template.instance().subscribe("Users", SUB_ENTREVISTADOR.filter, SUB_ENTREVISTADOR.projection);
 
     Template.instance().entrevistadores = () => {
         return Users.find({roles: "entrevistador"});
@@ -199,7 +208,7 @@ var updateSpans = function(template) {
 
 Template.pesquisasView.onCreated(() => {
     Template.instance().subscribe('Pesquisas', FlowRouter.getParam('_id'));
-    Template.instance().subscribe('Entrevistadores');
+    Template.instance().subscribe("Users", SUB_ENTREVISTADOR.filter, SUB_ENTREVISTADOR.projection);
 });
 
 Template.pesquisasView.onRendered(() => {
@@ -299,51 +308,51 @@ Template.pesquisasEdit.onCreated(function () {
 
         onReady: function() {
 
-            template.subscribe("Entrevistadores", {
+            template.subscribe("Users", SUB_ENTREVISTADOR.filter, SUB_ENTREVISTADOR.projection,
+                {
+                    onReady: function() {
 
-                onReady: function() {
+                        template.autorun(function () {
 
-                    template.autorun(function () {
+                            console.log("Rodou o this!");
 
-                        console.log("Rodou o this!");
+                            template.pesquisa = Pesquisas.findOne({_id: FlowRouter.getParam('_id')});
 
-                        template.pesquisa = Pesquisas.findOne({_id: FlowRouter.getParam('_id')});
+                            template.entrevistadoresSelecionados =
+                                Users.find({roles: "entrevistador", _id: { $in : template.pesquisa.entrevistadores}}).fetch();
 
-                        template.entrevistadoresSelecionados =
-                            Users.find({roles: "entrevistador", _id: { $in : template.pesquisa.entrevistadores}}).fetch();
+                            template.entrevistadores = Users.find({roles: "entrevistador"}).fetch();
 
-                        template.entrevistadores = Users.find({roles: "entrevistador"}).fetch();
+                            $(".token-input-list-custom").remove();
 
-                        $(".token-input-list-custom").remove();
+                            $("#entrevistadores").tokenInput(
+                                template.entrevistadores,
+                                {
+                                    propertyToSearch: "nome",
+                                    theme: "custom",
+                                    hintText: "Pesquise pelo nome",
+                                    noResultsText: "Nenhum resultado encontrado",
+                                    searchingText: "Procurando...",
+                                    minChars: 3,
+                                    resultsFormatter:
+                                        function(item){
+                                            return '<li>' + item.nome + '</li>'
+                                        },
+                                    tokenFormatter:
+                                        function(item){
+                                            return '<li><p>' +  item.nome + '</p></li>'
+                                        },
+                                    preventDuplicates: true,
+                                    tokenValue: "_id",
+                                    allowTabOut: true,
+                                    prePopulate: template.entrevistadoresSelecionados
+                                }
+                            );
 
-                        $("#entrevistadores").tokenInput(
-                            template.entrevistadores,
-                            {
-                                propertyToSearch: "nome",
-                                theme: "custom",
-                                hintText: "Pesquise pelo nome",
-                                noResultsText: "Nenhum resultado encontrado",
-                                searchingText: "Procurando...",
-                                minChars: 3,
-                                resultsFormatter:
-                                    function(item){
-                                        return '<li>' + item.nome + '</li>'
-                                    },
-                                tokenFormatter:
-                                    function(item){
-                                        return '<li><p>' +  item.nome + '</p></li>'
-                                    },
-                                preventDuplicates: true,
-                                tokenValue: "_id",
-                                allowTabOut: true,
-                                prePopulate: template.entrevistadoresSelecionados
-                            }
-                        );
-
-                        updateFields(template);
-                    });
-                }
-            });
+                            updateFields(template);
+                        });
+                    }
+                });
 
 
         }

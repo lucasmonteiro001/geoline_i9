@@ -1,24 +1,39 @@
 import { Users } from '../users';
 import './methods';
 
-Meteor.publish('Users', function() {
+Meteor.publish('Users', function(filter, projection) {
+
+    projection || (projection = {});
+    check(projection, Object);
 
     let isAdmin = Roles.userIsInRole( this.userId, 'administrador' );
 
-    if(isAdmin)
-        return Users.find({}, {fields: {emails: 1, roles:1}});
-    else
+    if(isAdmin) {
+
+        // se existe um filtro
+        if( typeof filter === "object") {
+
+            check(filter, Object);
+
+            return Users.find(filter, projection);
+        }
+        // se eh um string, infere-se que esta procurando por uma ID
+        else if(typeof filter === "string") {
+
+            check(filter, String);
+
+            return Users.find({_id: filter}, projection);
+        }
+        // se nao eh especificado nenhum filtro ou projection, retorna todos os usuarios
+        else {
+
+            return Users.find({});
+        }
+    }
+
+    else {
+        
         return null;
-
-});
-
-Meteor.publish('Entrevistadores', function() {
-
-    let isAdmin = Roles.userIsInRole( this.userId, 'administrador' );
-
-    if(isAdmin)
-        return Users.find({roles: "entrevistador"}, {fields: {_id:1, emails: 1, roles:1, nome:1}});
-    else
-        return null;
+    }
 
 });
