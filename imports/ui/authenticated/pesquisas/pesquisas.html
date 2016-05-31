@@ -252,7 +252,6 @@
 
 
 <template name="pesquisasView">
-    {{ pesquisass }}
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-8">
             <h2 id="nomeObjeto"></h2>
@@ -295,60 +294,73 @@
     </div>
 
 
-    <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
-        <div class="row form-horizontal row-border">
-            <div class="col-lg-12">
-                <div class="panel-body">
+    {{#each pesquisa}}
+
+        <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+            <div class="row form-horizontal row-border">
+                <div class="col-lg-12">
+                    <div class="panel-body">
 
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="nome">Pesquisa</label>
-                        <div class="col-md-12">
-                            <span id="nome"> </span>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="nome">Pesquisa</label>
+                            <div class="col-md-12">
+                                <span id="nome"> {{nome}} </span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="status">Status</label>
-                        <div class="col-md-12">
-                            <span id="status"> </span>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="status">Status</label>
+                            <div class="col-md-12">
+                                {{#if status}}
+                                    Aberta
+                                {{else}}
+                                    Fechada
+                                {{/if}}
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="numMaxEntrevistados">Numero maximo de entrevistados</label>
-                        <div class="col-md-12">
-                            <span id="numMaxEntrevistados"> </span>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="numMaxEntrevistados">Numero maximo de entrevistados</label>
+                            <div class="col-md-12">
+                                <span>  {{numMaxEntrevistados}} </span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="entrevistadores">Entrevistadores</label>
-                        <div class="col-md-12">
-                            <span id="entrevistadores"> </span>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="entrevistadores">Entrevistadores</label>
+                            <div class="col-md-12">
+                                {{#each entrevistadores}}
+                                    <li><span> {{this}} </span></li>
+                                {{/each}}
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="candidatos">Candidatos</label>
-                        <div class="col-md-12">
-                            <span id="candidatos"> </span>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="candidatos">Candidatos</label>
+                            <div class="col-md-12">
+                                {{#each candidatos}}
+                                    <li><span> {{this}} </span></li>
+                                {{/each}}
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="bairros">Bairros</label>
-                        <div class="col-md-12">
-                            <span id="bairros"> </span>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="bairros">Bairros</label>
+                            <div class="col-md-12">
+                                {{#each bairros}}
+                                    <li><span> {{this}} </span></li>
+                                {{/each}}
+                            </div>
                         </div>
+
+
                     </div>
-
-
                 </div>
             </div>
         </div>
-    </div>
 
+    {{/each}}
 
 </template>
 

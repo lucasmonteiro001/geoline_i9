@@ -3,7 +3,8 @@ import './pesquisas.html';
 import '../../globals/page-heading.html';
 import { Pesquisas } from '../../../api/pesquisas/pesquisas.js';
 import {FlowRouter} from 'meteor/kadira:flow-router';
-import {Users} from '../../../api/users/users'
+import {Users} from '../../../api/users/users';
+import { ReactiveVar } from 'meteor/reactive-var';
 
 
 let template;
@@ -19,6 +20,9 @@ const SUB_ENTREVISTADOR = {
     },
     projection: {
         fields: { _id: 1, emails: 1, roles: 1, nome: 1 }
+    },
+    projectionNome: {
+        fields: { _id: 1, nome: 1 }
     }
 }
 
@@ -112,7 +116,6 @@ Template.pesquisasAdd.onRendered(() => {
     });
 });
 
-
 Template.pesquisasAdd.events({
 
     //Eventos do template de inserção
@@ -191,7 +194,7 @@ var updateSpans = function(template) {
 
     if (pesquisass && template.view.isRendered) {
 
-        template.find('[id="nome"]').textContent = pesquisass.nome;
+        // template.find('[id="nome"]').textContent = pesquisass.nome;
         template.find('[id="status"]').textContent = (pesquisass.status) ? "Aberta" : "Fechada";
         template.find('[id="numMaxEntrevistados"]').textContent = pesquisass.numMaxEntrevistados;
         template.find('[id="entrevistadores"]').textContent =
@@ -207,26 +210,61 @@ var updateSpans = function(template) {
 }
 
 Template.pesquisasView.onCreated(() => {
-    Template.instance().subscribe('Pesquisas', FlowRouter.getParam('_id'));
-    Template.instance().subscribe("Users", SUB_ENTREVISTADOR.filter, SUB_ENTREVISTADOR.projection);
+
+    let template = Template.instance();
+
+    template.id = FlowRouter.getParam('_id');
+
+    template.subscribe('Pesquisas', template.id);
+
+    template.subscribe("Users", SUB_ENTREVISTADOR.filter, SUB_ENTREVISTADOR.projectionNome);
+
+    template.pesquisa = Pesquisas.find({_id: template.id});
+
+    template.entrevistadores = new ReactiveVar([]);
+
+    template.autorun(function () {
+
+        let pesquisa = template.pesquisa.fetch()[0];
+
+        if(pesquisa) {
+
+            template.entrevistadores.set(pesquisa.entrevistadores);
+        }
+
+    })
+
 });
 
 Template.pesquisasView.onRendered(() => {
     let id = FlowRouter.getParam('_id');
     Template.instance().pesquisasNome = "";
     Template.instance().pesquisasID = id;
-    updateSpans(Template.instance());
+    // updateSpans(Template.instance());
 
 });
 
 Template.pesquisasView.helpers({
-    pesquisasID() {
+    pesquisasID () {
         return FlowRouter.getParam('_id');
     },
-    pesquisass() {
+    pesquisa () {
 
-        updateSpans(Template.instance());
+        return Template.instance().pesquisa;
+    },
+    entrevistadores () {
+
+        let entrevistadores = Users.find({
+            _id: { $in: Template.instance().entrevistadores.get()
+            }}).fetch();
+
+        let entrevistadoresNome = entrevistadores.map(function(val) {
+               return val.nome;
+            });
+
+        return entrevistadoresNome;
     }
+
 });
 
 Template.pesquisasView.events({
