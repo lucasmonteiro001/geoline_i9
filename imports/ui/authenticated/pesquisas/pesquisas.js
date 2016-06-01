@@ -254,7 +254,7 @@ Template.pesquisasView.helpers({
     },
     entrevistadores () {
 
-        let entrevistadores = Users.find({
+        let entrevstadores = Users.find({
             _id: { $in: Template.instance().entrevistadores.get()
             }}).fetch();
 

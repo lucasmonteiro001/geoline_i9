@@ -1,3 +1,4 @@
+import "../../../ui/authenticated/entrevistas/entrevistas";
 import "../../../ui/authenticated/pesquisas/pesquisas";
 import "../../../ui/authenticated/cliente/cliente";
 import "../../../ui/authenticated/cliente/cliente";
@@ -98,5 +99,29 @@ authenticatedRoutes.route( '/pesquisasView/:_id', {
 	name: 'pesquisasView',
 	action() {
 		BlazeLayout.render( 'default', { yield: 'pesquisasView' } );
+	} 
+});
+authenticatedRoutes.route( '/entrevistas', {
+	name: 'entrevistas',
+	action() {
+		BlazeLayout.render( 'default', { yield: 'entrevistas' } );
+	} 
+});
+authenticatedRoutes.route( '/entrevistasAdd', {
+	name: 'entrevistasAdd',
+	action() {
+		BlazeLayout.render( 'default', { yield: 'entrevistasAdd' } );
+	} 
+});
+authenticatedRoutes.route( '/entrevistasEdit/:_id', {
+	name: 'entrevistasEdit',
+	action() {
+		BlazeLayout.render( 'default', { yield: 'entrevistasEdit' } );
+	} 
+});
+authenticatedRoutes.route( '/entrevistasView/:_id', {
+	name: 'entrevistasView',
+	action() {
+		BlazeLayout.render( 'default', { yield: 'entrevistasView' } );
 	} 
 });
