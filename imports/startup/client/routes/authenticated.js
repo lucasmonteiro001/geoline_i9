@@ -79,24 +79,28 @@ authenticatedRoutes.route( '/clienteView/:_id', {
 
 authenticatedRoutes.route( '/pesquisas', {
 	name: 'pesquisas',
+    triggersEnter: [blockUnauthorizedAdmin],
 	action() {
 		BlazeLayout.render( 'default', { yield: 'pesquisas' } );
 	} 
 });
 authenticatedRoutes.route( '/pesquisasAdd', {
 	name: 'pesquisasAdd',
+    triggersEnter: [blockUnauthorizedAdmin],
 	action() {
 		BlazeLayout.render( 'default', { yield: 'pesquisasAdd' } );
 	} 
 });
 authenticatedRoutes.route( '/pesquisasEdit/:_id', {
 	name: 'pesquisasEdit',
+    triggersEnter: [blockUnauthorizedAdmin],
 	action() {
 		BlazeLayout.render( 'default', { yield: 'pesquisasEdit' } );
 	} 
 });
 authenticatedRoutes.route( '/pesquisasView/:_id', {
 	name: 'pesquisasView',
+    triggersEnter: [blockUnauthorizedAdmin],
 	action() {
 		BlazeLayout.render( 'default', { yield: 'pesquisasView' } );
 	} 
@@ -107,7 +111,7 @@ authenticatedRoutes.route( '/entrevistas', {
 		BlazeLayout.render( 'default', { yield: 'entrevistas' } );
 	} 
 });
-authenticatedRoutes.route( '/entrevistasAdd', {
+authenticatedRoutes.route( '/entrevistasAdd/:pesquisaId', {
 	name: 'entrevistasAdd',
 	action() {
 		BlazeLayout.render( 'default', { yield: 'entrevistasAdd' } );
@@ -124,4 +128,10 @@ authenticatedRoutes.route( '/entrevistasView/:_id', {
 	action() {
 		BlazeLayout.render( 'default', { yield: 'entrevistasView' } );
 	} 
+});
+authenticatedRoutes.route( '/entrevistasList/:pesquisaId', {
+    name: 'entrevistasList',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'entrevistasList' } );
+    }
 });

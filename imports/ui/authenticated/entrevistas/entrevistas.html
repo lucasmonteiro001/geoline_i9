@@ -1,19 +1,12 @@
 <template name="entrevistas">
-    {{> pageHeading title='Lista de entrevistass' }}
+
+    {{> pageHeading title='Lista de pesquisas vinculadas' }}
 
     <div class="wrapper wrapper-content white-bg animated fadeInRight">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="pull-right btAdd">
-                    <a href="{{pathFor 'entrevistasAdd'}}" class="btn btn-primary">
-                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Adicionar</a>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-lg-12">
-                {{> entrevistasList}}
+                {{> pesquisasListParaEntrevistadores}}
             </div>
         </div>
 
@@ -24,64 +17,101 @@
 <template name="entrevistasAdd">
     {{> pageHeading title='Cadastrar entrevistas' }}
 
+    {{#each pesquisa}}
 
-    <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
-        <form class="form-horizontal row-border" id="userForm" data-toggle="validator" role="form">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel-body">
-                    
+        <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+            <form class="form-horizontal row-border" id="userForm" data-toggle="validator" role="form">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel-body">
 
-           <div class="form-group">
-              <label class="col-md-2 control-label" for="endereco">Informe o Endere�o</label>
-              <div class="col-md-10">
-                <textarea class="form-control" rows="7" id="endereco" name="endereco"></textarea>
-              </div>
-           </div>
+                            <h3>{{nome}}</h3>
 
 
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="candidato">Candidato</label>
+                                <div class="col-md-10">
+                                    <select name="candidato" id="candidato" required>
+                                        <option disabled selected value=""> Selecione um candidato </option>
+                                        {{#each candidatos}}
+                                            <option value="{{this}}">{{this}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="bairro">Bairro</label>
+                                <div class="col-md-10">
+                                    <select name="bairro" id="bairro" required>
+                                        <option disabled selected value=""> Selecione um bairro </option>
+                                        {{#each bairros}}
+                                            <option value="{{this}}">{{this}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
 
-           <div class="form-group">
-              <label class="col-md-2 control-label" for="telefone">Telefone/Cel:</label>
-              <div class="col-md-10">
-                <input type="text" id="telefone" name="telefone" class="form-control" >
-              </div>
-            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="faixaEtaria">Faixa etária</label>
+                                <div class="col-md-10">
+                                    <select name="faixaEtaria" id="faixaEtaria" required>
+                                        <option disabled selected value=""> Selecione a faixa etária </option>
+                                        <option value='15 - 19'>15 - 19</option>
+                                        <option value="20 - 24">20 - 24</option>
+                                        <option value="25 - 29">25 - 29</option>
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="faixaDeRenda">Faixa de renda</label>
+                                <div class="col-md-10">
+                                    <select name="faixaDeRenda" id="faixaDeRenda" required>
+                                        <option disabled selected value=""> Selecione a faixa de renda </option>
+                                        <option value='1'>Até 1 salário mínimo</option>
+                                        <option value="2">Até 2 salários mínimos</option>
+                                        <option value="5">Até 5 salários mínimos</option>
+                                        <option value="5+">Acima de 5 salários mínimos</option>
+                                    </select>
+                                </div>
+                            </div>
 
-           <div class="form-group">
-              <label class="col-md-2 control-label" for="nome">Informe um nome</label>
-              <div class="col-md-10">
-                <input type="text" id="nome" name="nome" class="form-control" >
-              </div>
-            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Sexo</label>
+                                <div class="col-md-10">
 
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label>
+                                            <input type="radio" name="sexo" value="feminino">
+                                            Feminino
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="sexo" value="masculino">
+                                            Masculino
+                                        </label>
+                                    </div>
 
-           <div class="form-group">
-              <label class="col-md-2 control-label" for="Email">Meu Email</label>
-              <div class="col-md-10">
-                <input type="text" id="Email" name="Email" class="form-control" >
-              </div>
-            </div>
+                                </div>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="pull-right btAdd">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <a href="{{pathFor 'entrevistas'}}" class="btn">Voltar</a>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="pull-right btAdd">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <a href="{{pathFor 'entrevistasList'}}/{{pesquisaId}}" class="btn">Voltar</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
 
+    {{/each}}
 
 </template>
-
 
 <template name="entrevistasEdit">
     {{ entrevistass }}
@@ -109,40 +139,40 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel-body">
-                    
-
-           <div class="form-group">
-              <label class="col-md-2 control-label" for="nome">Informe um nome</label>
-              <div class="col-md-10">
-                <input type="text" id="nome" name="nome" class="form-control" >
-              </div>
-            </div>
 
 
-           <div class="form-group">
-              <label class="col-md-2 control-label" for="endereco">Informe o Endere�o</label>
-              <div class="col-md-10">
-                <textarea class="form-control" rows="7" id="endereco" name="endereco"></textarea>
-              </div>
-           </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="nome">Informe um nome</label>
+                            <div class="col-md-10">
+                                <input type="text" id="nome" name="nome" class="form-control" >
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="endereco">Informe o Endere�o</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" rows="7" id="endereco" name="endereco"></textarea>
+                            </div>
+                        </div>
 
 
 
 
-           <div class="form-group">
-              <label class="col-md-2 control-label" for="telefone">Telefone/Cel:</label>
-              <div class="col-md-10">
-                <input type="text" id="telefone" name="telefone" class="form-control" >
-              </div>
-            </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="telefone">Telefone/Cel:</label>
+                            <div class="col-md-10">
+                                <input type="text" id="telefone" name="telefone" class="form-control" >
+                            </div>
+                        </div>
 
 
-           <div class="form-group">
-              <label class="col-md-2 control-label" for="Email">Meu Email</label>
-              <div class="col-md-10">
-                <input type="text" id="Email" name="Email" class="form-control" >
-              </div>
-            </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="Email">Meu Email</label>
+                            <div class="col-md-10">
+                                <input type="text" id="Email" name="Email" class="form-control" >
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -207,60 +237,77 @@
 
 
     <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
-            <div class="row form-horizontal row-border">
-                <div class="col-lg-12">
-                    <div class="panel-body">
-                        
+        <div class="row form-horizontal row-border">
+            <div class="col-lg-12">
+                <div class="panel-body">
 
-                        <div class="form-group">
-                            <label class="col-md-2 control-label" for="nome">Informe um nome</label>
-                            <div class="col-md-10">
-                                <span id="nome"> </span>
-                            </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="nome">Informe um nome</label>
+                        <div class="col-md-10">
+                            <span id="nome"> </span>
                         </div>
-
-
-
-                        <div class="form-group">
-                            <label class="col-md-2 control-label" for="Email">Informe um Email</label>
-                            <div class="col-md-10">
-                                <span id="Email"> </span>
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group">
-                            <label class="col-md-2 control-label" for="telefone">Informe um telefone</label>
-                            <div class="col-md-10">
-                                <span id="telefone"> </span>
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group">
-                            <label class="col-md-2 control-label" for="endereco">Informe um endereco</label>
-                            <div class="col-md-10">
-                                <span id="endereco"> </span>
-                            </div>
-                        </div>
-
-
-
                     </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="Email">Informe um Email</label>
+                        <div class="col-md-10">
+                            <span id="Email"> </span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="telefone">Informe um telefone</label>
+                        <div class="col-md-10">
+                            <span id="telefone"> </span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="endereco">Informe um endereco</label>
+                        <div class="col-md-10">
+                            <span id="endereco"> </span>
+                        </div>
+                    </div>
+
+
+
                 </div>
             </div>
+        </div>
     </div>
 
 
 </template>
 
 
-<template name="entrevistasList">
+<template name="pesquisasListParaEntrevistadores">
     {{> reactiveTable settings=settings}}
 </template>
 
-<template name="entrevistasTmpl">
-    <a href="{{pathFor 'entrevistasView'}}/{{_id}}">  {{nome}} </a>
+<template name="pesquisasTmplParaEntrevistadores">
+    <a href="{{pathFor 'entrevistasList'}}/{{_id}}">  {{nome}} </a>
+</template>
+
+<template name="entrevistasList">
+
+    {{> pageHeading title='Entrevistas' }}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="pull-right btAdd">
+                <a href="{{pathFor 'entrevistasAdd'}}/{{pesquisaId}}" class="btn btn-primary">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Adicionar nova entrevista</a>
+            </div>
+        </div>
+    </div>
+
+    {{> reactiveTable settings=settings}}
+
 </template>

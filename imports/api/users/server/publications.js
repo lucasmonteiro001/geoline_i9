@@ -8,7 +8,7 @@ Meteor.publish('Users', function(filter, projection) {
 
     let isAdmin = Roles.userIsInRole( this.userId, 'administrador' );
 
-    if(isAdmin) {
+    // if(isAdmin) {
 
         // se existe um filtro
         if( typeof filter === "object") {
@@ -29,11 +29,11 @@ Meteor.publish('Users', function(filter, projection) {
 
             return Users.find({});
         }
-    }
-
-    else {
-        
-        return null;
-    }
+    // }
+    //
+    // else {
+    //
+    //     return null;
+    // }
 
 });

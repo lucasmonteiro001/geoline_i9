@@ -512,6 +512,10 @@ Template.pesquisasList.helpers({
                         return "Fechada";
                 }},
                 {key:'numMaxEntrevistados', label:'# máximo de entrevistados'},
+                {key: 'entrevistas', label: '# de entrevistados', fn: function(val) {
+                    if(!val) return 0;
+                    return val.length;
+                }},
                 {key:'entrevistadores', label:'# de entrevistadores associados', fn: function(val) {
                     return val.length;
                 }},

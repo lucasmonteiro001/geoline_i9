@@ -1,7 +1,9 @@
-import {Template} from 'meteor/templating';
+import { Template } from 'meteor/templating';
 import './entrevistas.html';
 import '../../globals/page-heading.html';
 import { Entrevistas } from '../../../api/entrevistas/entrevistas.js'
+import { Pesquisas } from '../../../api/pesquisas/pesquisas';
+import { Users } from '../../../api/users/users';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 
 
@@ -21,11 +23,26 @@ Template.entrevistas.helpers({
 
 Template.entrevistasAdd.onCreated(() => {
 
-    //Faz alguma coisa ao criar o template de inserção
+    let template = Template.instance();
+
+    template.pesquisaId = FlowRouter.getParam('pesquisaId');
+
+    template.subscribe('Pesquisas',
+        {_id: template.pesquisaId, entrevistadores: Meteor.userId()},
+        {entrevistas: 0});
+
+    template.pesquisa = Pesquisas.find({_id: template.pesquisaId});
 
 });
 
-
+Template.entrevistasAdd.helpers({
+    'pesquisaId': () => {
+        return FlowRouter.getParam('pesquisaId');
+    },
+    'pesquisa': () => {
+        return Template.instance().pesquisa;
+    }
+});
 
 Template.entrevistasAdd.events({
 
@@ -33,32 +50,29 @@ Template.entrevistasAdd.events({
 
     'submit form' (event, template) {
 
-        template = Template.instance();
+        event.preventDefault();
+
+
+        const entrevistaData = {
+            candidato : template.find('[id="candidato"]').value.trim(),
+            bairro: template.find('[id="bairro"]').value.trim(),
+            faixaEtaria: template.find('[id="faixaEtaria"]').value.trim(),
+            faixaDeRenda: template.find('[id="faixaDeRenda"]').value.trim(),
+            sexo: template.find('[name="sexo"]:checked').value.trim(),
+        };
+
+        Meteor.call('entrevistas.insert', FlowRouter.getParam('pesquisaId'), entrevistaData, (error) => {
+            if (error) {
+                alert(error.reason);
+            } else {
+
+                FlowRouter.go('/entrevistas/' + FlowRouter.getParam('pesquisaId'));
+            }
+        });
 
 
 
-            event.preventDefault();
-
-            const entrevistasData = {
-               userId: '',
-                nome: template.find('[id="nome"]').value.trim(),
-endereco: template.find('[id="endereco"]').value.trim(),
-telefone: template.find('[id="telefone"]').value.trim(),
-Email: template.find('[id="Email"]').value.trim()
-            };
-
-                Meteor.call('entrevistas.insert', entrevistasData, (error) => {
-                    if (error) {
-                        alert(error.reason);
-                    } else {
-
-                        FlowRouter.go('entrevistas');
-                    }
-                });
-
-
-
-        }
+    }
 
 
 
@@ -73,9 +87,9 @@ var updateFields = function(template) {
         template.find('[id="nomeObjeto"]').textContent = entrevistass.nome;
         template.find('[id="bc-nomeObjeto"]').textContent = entrevistass.nome;
         template.find('[id="nome"]').value = entrevistass.nome;
-template.find('[id="endereco"]').value = entrevistass.endereco;
-template.find('[id="telefone"]').value = entrevistass.telefone;
-template.find('[id="Email"]').value = entrevistass.Email;
+        template.find('[id="endereco"]').value = entrevistass.endereco;
+        template.find('[id="telefone"]').value = entrevistass.telefone;
+        template.find('[id="Email"]').value = entrevistass.Email;
     }
 
 };
@@ -88,9 +102,9 @@ var updateSpans = function(template) {
         template.find('[id="nomeObjeto"]').textContent = entrevistass.nome;
         template.find('[id="bc-nomeObjeto"]').textContent = entrevistass.nome;
         template.find('[id="nome"]').textContent = entrevistass.nome;
-template.find('[id="endereco"]').textContent = entrevistass.endereco;
-template.find('[id="telefone"]').textContent = entrevistass.telefone;
-template.find('[id="Email"]').textContent = entrevistass.Email;
+        template.find('[id="endereco"]').textContent = entrevistass.endereco;
+        template.find('[id="telefone"]').textContent = entrevistass.telefone;
+        template.find('[id="Email"]').textContent = entrevistass.Email;
 
     }
 
@@ -98,7 +112,7 @@ template.find('[id="Email"]').textContent = entrevistass.Email;
 
 
 Template.entrevistasView.onCreated(() => {
-    Meteor.subscribe('entrevistas');
+
 
 });
 
@@ -150,9 +164,7 @@ Template.entrevistasView.events({
 Template.entrevistasEdit.onCreated(() => {
 
     template = Template.instance();
-    
-    
-    Meteor.subscribe('entrevistas');
+
 
 });
 
@@ -164,9 +176,9 @@ Template.entrevistasEdit.onRendered(() => {
 Template.entrevistasEdit.helpers({
     entrevistasID() {
         return FlowRouter.getParam('_id');
-    },    
+    },
     entrevistass() {
-        
+
         updateFields(Template.instance());
     }
 });
@@ -176,7 +188,7 @@ Template.entrevistasEdit.events({
     //Eventos do template de inserção
 
     'submit form' (event, template) {
-        
+
         template = Template.instance();
 
 
@@ -185,9 +197,9 @@ Template.entrevistasEdit.events({
         const id = FlowRouter.getParam('_id');
         const entrevistasData = {
             nome: template.find('[id="nome"]').value.trim(),
-endereco: template.find('[id="endereco"]').value.trim(),
-telefone: template.find('[id="telefone"]').value.trim(),
-Email: template.find('[id="Email"]').value.trim()
+            endereco: template.find('[id="endereco"]').value.trim(),
+            telefone: template.find('[id="telefone"]').value.trim(),
+            Email: template.find('[id="Email"]').value.trim()
         };
 
         Meteor.call('entrevistas.update',id, entrevistasData, (error) => {
@@ -209,15 +221,19 @@ Email: template.find('[id="Email"]').value.trim()
 
 
 
-Template.entrevistasList.onCreated(() => {
+Template.pesquisasListParaEntrevistadores.onCreated(() => {
 
-    Meteor.subscribe('entrevistas');
+    let template = Template.instance();
 
+    template.subscribe('Pesquisas', {entrevistadores : Meteor.userId()});
 
+    template.pesquisas = () => {
+        return Pesquisas.find();
+    }
 
 });
 
-Template.entrevistasList.helpers({
+Template.pesquisasListParaEntrevistadores.helpers({
     entrevistass() {
         const entrevistass = Entrevistas.find();
         if ( entrevistass ) {
@@ -226,19 +242,66 @@ Template.entrevistasList.helpers({
     },
     'settings': function () {
         return {
-            collection: Entrevistas,
+            collection: Template.instance().pesquisas().fetch(),
             rowsPerPage: 10,
             showFilter: true,
             showRowCount: true,
             showColumnToggles: true,
             multiColumnSort: true,
             fields: [
-                {key:'nome', label:'Informe um nome', tmpl: Template.entrevistasTmpl},
-{key:'endereco', label:'Informe o Endere�o'},
-{key:'telefone', label:'Telefone/Cel:'},
-{key:'Email', label:'Meu Email'}
+                {key:'nome', label:'Nome', tmpl: Template.pesquisasTmplParaEntrevistadores},
+                {key: 'entrevistas', label: '# de entrevistados', fn: function(val) {
+                    if(!val) return 0;
+                    return val.length;
+                }},
+                {key:'numMaxEntrevistados', label:'# max de entrevistados'},
             ]
         };
     }
 });
 
+Template.entrevistasList.onCreated(() => {
+    // Session.set("pesquisa", FlowRouter.getParam('_id'));
+    let template = Template.instance(),
+        id = FlowRouter.getParam('pesquisaId');
+
+    template.subscribe("Pesquisas", {_id: id}, {entrevistas:1});
+
+    template.entrevistas = new ReactiveVar([]);
+
+    template.autorun(function() {
+
+        let pesquisa = Pesquisas.findOne();
+
+        if(pesquisa) {
+
+            template.entrevistas.set(pesquisa.entrevistas);
+        }
+
+    });
+
+});
+
+Template.entrevistasList.helpers({
+    'pesquisaId': () => {
+        return FlowRouter.getParam('pesquisaId');
+    },
+    'settings': function () {
+
+        return {
+            collection: Template.instance().entrevistas.get(),
+            rowsPerPage: 10,
+            showFilter: true,
+            showRowCount: true,
+            showColumnToggles: true,
+            multiColumnSort: true,
+            fields: [
+                {key:'candidato', label:'Candidato'},
+                {key: 'bairro', label: 'Bairro'},
+                {key: 'faixaEtaria', label: 'Faixa etária'},
+                {key: 'faixaDeRenda', label: 'Faixa de renda'},
+                {key: 'sexo', label: 'Sexo'}
+            ]
+        };
+    }
+});

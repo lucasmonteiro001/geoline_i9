@@ -1,18 +1,20 @@
 import { Entrevistas } from "./../entrevistas.js"
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
+import { Pesquisas } from '../../pesquisas/pesquisas';
 
 Meteor.methods({
-    'entrevistas.insert' ( dataObj ) {
+    'entrevistas.insert' ( pesquisaId, entrevista ) {
 
-        dataObj.userId = this.userId;
+        entrevista.entrevistador = this.userId;
 
-        check(dataObj,{nome: String, endereco: String, telefone: String, Email: String,  userId:String});
+        check(entrevista, Object);
+        check(pesquisaId, String);
 
-        Entrevistas.insert( dataObj, ( error ) => {
+        Pesquisas.update( pesquisaId, {$push: {entrevistas : entrevista}} , ( error ) => {
             if ( error ) {
                 console.log( error );
-            }
-        });
+            }});
+
     },
     'entrevistas.update' ( id,dataObj ) {
 
@@ -24,7 +26,7 @@ Meteor.methods({
         });
     },
     'entrevistas.delete'(id) {
-        check(id, String);        
+        check(id, String);
         Entrevistas.remove(id);
     },
 });
