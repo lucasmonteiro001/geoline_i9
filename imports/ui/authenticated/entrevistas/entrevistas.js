@@ -289,7 +289,7 @@ Template.entrevistasList.helpers({
     'settings': function () {
 
         return {
-            collection: Template.instance().entrevistas.get(),
+            collection: Template.instance().entrevistas.get() || [],
             rowsPerPage: 10,
             showFilter: true,
             showRowCount: true,

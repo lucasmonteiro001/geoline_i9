@@ -1,41 +1,31 @@
-import { Mongo } from 'meteor/mongo';
-
-
-export const Entrevistas = new Mongo.Collection('entrevistas');
-
-Entrevistas_Schema = new SimpleSchema({
-    "nome": {
-        type: String,
-        defaultValue: "",
-        label: "Informe um nome"
+export const Entrevistas_Schema = new SimpleSchema({
+    _id: {
+        type: String
     },
-    "endereco": {
+    candidato : {
         type: String,
-        defaultValue: "",
-        label: "Informe o Endere�o"
+        label: 'Candidato',
+        optional: false
     },
-    "telefone": {
+    bairro : {
         type: String,
-        defaultValue: "",
-        label: "Telefone/Cel:"
+        label: 'Bairro',
+        optional: false
     },
-    "Email": {
+    faixaEtaria : {
         type: String,
-        defaultValue: "",
-        label: "Meu Email"
+        label: 'Faixa etária',
+        optional: false
     },
-
-    "userId": {
+    faixaDeRenda : {
         type: String,
-        label: "Associated User ID"
+        label: 'Faixa de renda',
+        optional: false
+    },
+    sexo: {
+        type: String,
+        label: 'Sexo',
+        allowedValues: ['masculino', 'feminino'],
+        optional: false
     }
-});
-
-Entrevistas.attachSchema( Entrevistas_Schema );
-
-// Deny all client-side updates on the Cliente collection
-Entrevistas.deny({
-    insert() { return true; },
-    update() { return true; },
-    remove() { return true; },
 });

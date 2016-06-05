@@ -8,12 +8,19 @@ import {Meteor} from 'meteor/meteor';
 
 const blockUnauthorizedAdmin = ( context, redirect ) => {
 
-    // setTimeout(function() {
-        if (!Roles.userIsInRole( Meteor.userId(), 'administrador' ) ) {
-            Bert.alert('Acesso nao permitido!', 'danger')
-            redirect('index');
-        }
-    // }, 1200);
+    if (!Roles.userIsInRole( Meteor.userId(), 'administrador' ) ) {
+        Bert.alert('Acesso nao permitido!', 'danger')
+        redirect('index');
+    }
+
+};
+
+const blockUnauthorizedEntrevistador = ( context, redirect ) => {
+
+    if (!Roles.userIsInRole( Meteor.userId(), 'entrevistador' ) ) {
+        Bert.alert('Acesso nao permitido!', 'danger')
+        redirect('index');
+    }
 
 };
 
@@ -74,54 +81,63 @@ authenticatedRoutes.route( '/pesquisasView/:_id', {
 });
 authenticatedRoutes.route( '/entrevistas', {
     name: 'entrevistas',
+    triggersEnter: [ blockUnauthorizedEntrevistador ],
     action() {
         BlazeLayout.render( 'default', { yield: 'entrevistas' } );
     }
 });
 authenticatedRoutes.route( '/entrevistasAdd/:pesquisaId', {
     name: 'entrevistasAdd',
+    triggersEnter: [ blockUnauthorizedEntrevistador ],
     action() {
         BlazeLayout.render( 'default', { yield: 'entrevistasAdd' } );
     }
 });
 authenticatedRoutes.route( '/entrevistasEdit/:_id', {
     name: 'entrevistasEdit',
+    triggersEnter: [ blockUnauthorizedEntrevistador ],
     action() {
         BlazeLayout.render( 'default', { yield: 'entrevistasEdit' } );
     }
 });
 authenticatedRoutes.route( '/entrevistasView/:_id', {
     name: 'entrevistasView',
+    triggersEnter: [ blockUnauthorizedEntrevistador ],
     action() {
         BlazeLayout.render( 'default', { yield: 'entrevistasView' } );
     }
 });
 authenticatedRoutes.route( '/entrevistasList/:pesquisaId', {
     name: 'entrevistasList',
+    triggersEnter: [ blockUnauthorizedEntrevistador ],
     action() {
         BlazeLayout.render( 'default', { yield: 'entrevistasList' } );
     }
 });
 authenticatedRoutes.route( '/perfis', {
     name: 'perfis',
+    triggersEnter: [blockUnauthorizedAdmin],
     action() {
         BlazeLayout.render( 'default', { yield: 'perfis' } );
     }
 });
 authenticatedRoutes.route( '/perfisAdd/:pesquisaId', {
     name: 'perfisAdd',
+    triggersEnter: [blockUnauthorizedAdmin],
     action() {
         BlazeLayout.render( 'default', { yield: 'perfisAdd' } );
     }
 });
 authenticatedRoutes.route( '/perfisEdit/:_id', {
     name: 'perfisEdit',
+    triggersEnter: [blockUnauthorizedAdmin],
     action() {
         BlazeLayout.render( 'default', { yield: 'perfisEdit' } );
     }
 });
 authenticatedRoutes.route( '/perfisView/:_id', {
     name: 'perfisView',
+    triggersEnter: [blockUnauthorizedAdmin],
     action() {
         BlazeLayout.render( 'default', { yield: 'perfisView' } );
     }

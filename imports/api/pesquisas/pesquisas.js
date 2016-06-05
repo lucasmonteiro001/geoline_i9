@@ -1,68 +1,8 @@
 import { Mongo } from 'meteor/mongo';
-
+import { Perfis_Schema } from '../perfis/perfis';
+import { Entrevistas_Schema } from '../entrevistas/entrevistas';
 
 export const Pesquisas = new Mongo.Collection('pesquisas');
-
-const Entrevista = new SimpleSchema({
-    _id: {
-        type: String
-    },
-    candidato : {
-        type: String,
-        label: 'Candidato',
-        optional: false
-    },
-    bairro : {
-        type: String,
-        label: 'Bairro',
-        optional: false
-    },
-    faixaEtaria : {
-        type: String,
-        label: 'Faixa etária',
-        optional: false
-    },
-    faixaDeRenda : {
-        type: String,
-        label: 'Faixa de renda',
-        optional: false
-    },
-    sexo: {
-        type: String,
-        label: 'Sexo',
-        allowedValues: ['masculino', 'feminino'],
-        optional: false
-    }
-});
-
-const Perfil = new SimpleSchema({
-    bairro : {
-        type: String,
-        label: 'Bairro',
-        optional: false
-    },
-    faixaEtaria : {
-        type: String,
-        label: 'Faixa etária',
-        optional: false
-    },
-    faixaDeRenda : {
-        type: String,
-        label: 'Faixa de renda',
-        optional: false
-    },
-    sexo: {
-        type: String,
-        label: 'Sexo',
-        allowedValues: ['masculino', 'feminino'],
-        optional: false
-    },
-    quantidade: {
-        type: Number,
-        label: 'Quantidade',
-        optional: false
-    }
-});
 
 Pesquisas.schema = new SimpleSchema({
     nome: {
@@ -108,12 +48,12 @@ Pesquisas.schema = new SimpleSchema({
         optional: false
     },
     entrevistas: {
-        type: [Entrevista],
+        type: [Entrevistas_Schema],
         label: 'Entrevistas',
         optional: true
     },
     perfis: {
-        type: [Perfil],
+        type: [Perfis_Schema],
         label: 'Perfil',
         optional: true
     }

@@ -628,29 +628,47 @@ Template.perfisRelatorio.helpers({
 
             let votosRegistrados = 0;
 
-            Template.instance().pesquisa.fetch()[0].perfis.forEach(function(perfil) {
+            let pesquisa = Template.instance().pesquisa.fetch()[0];
 
-                let key = `faixaEtaria:${perfil.faixaEtaria};faixaDeRenda:${perfil.faixaDeRenda};sexo:${perfil.sexo};meta:${perfil.quantidade}`;
+            if(pesquisa) {
 
-                // se ha alguma entrevista relacionada ao perfil
-                if(perfisImpressao[key]) {
-                    perfilFinal.push({faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
-                        sexo: perfil.sexo, meta: perfil.quantidade, quantidade: perfisImpressao[key].quantidade});
 
-                    votosRegistrados += perfisImpressao[key].quantidade;
+                pesquisa.perfis.forEach(function (perfil) {
+
+                    let key = `faixaEtaria:${perfil.faixaEtaria};faixaDeRenda:${perfil.faixaDeRenda};sexo:${perfil.sexo};meta:${perfil.quantidade}`;
+
+                    // se ha alguma entrevista relacionada ao perfil
+                    if (perfisImpressao[key]) {
+                        perfilFinal.push({
+                            faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
+                            sexo: perfil.sexo, meta: perfil.quantidade, quantidade: perfisImpressao[key].quantidade
+                        });
+
+                        votosRegistrados += perfisImpressao[key].quantidade;
+                    }
+                    // se nao existe entrevista, tudo eh zero
+                    else {
+                        perfilFinal.push({
+                            faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
+                            sexo: perfil.sexo, meta: perfil.quantidade, quantidade: 0
+                        });
+                    }
+
+                });
+
+                console.log(pesquisa.entrevistas);
+
+                // verifica se exsite entrevistas
+                if(pesquisa.entrevistas) {
+
+                    // coloca os votos nao registrados
+                    perfilFinal.push({
+                        faixaEtaria: "não registrado", faixaDeRenda: "não registrado",
+                        sexo: "não registrado", meta: "não registrado",
+                        quantidade: pesquisa.entrevistas.length - votosRegistrados
+                    });
                 }
-                // se nao existe entrevista, tudo eh zero
-                else {
-                    perfilFinal.push({faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
-                        sexo: perfil.sexo, meta: perfil.quantidade, quantidade: 0});
-                }
-
-            });
-
-            // coloca os votos nao registrados
-            perfilFinal.push({faixaEtaria: "não registrado", faixaDeRenda: "não registrado",
-                sexo: "não registrado" , meta:"não registrado",
-                quantidade: Template.instance().pesquisa.fetch()[0].entrevistas.length - votosRegistrados});
+            }
 
         }
 

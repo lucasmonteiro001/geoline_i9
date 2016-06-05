@@ -1,44 +1,27 @@
-import { Mongo } from 'meteor/mongo';
 
-
-export const Perfis = new Mongo.Collection('perfis');
-
-Perfis_Schema = new SimpleSchema({
-    "_id": {
-        type: String
-    },
-    "nome": {
+export const Perfis_Schema = new SimpleSchema({
+    _id : {
         type: String,
-        defaultValue: "",
-        label: "Informe um nome"
     },
-    "endereco": {
+    faixaEtaria : {
         type: String,
-        defaultValue: "",
-        label: "Informe o Endere�o"
+        label: 'Faixa etária',
+        optional: false
     },
-    "telefone": {
+    faixaDeRenda : {
         type: String,
-        defaultValue: "",
-        label: "Telefone/Cel:"
+        label: 'Faixa de renda',
+        optional: false
     },
-    "Email": {
+    sexo: {
         type: String,
-        defaultValue: "",
-        label: "Meu Email"
+        label: 'Sexo',
+        allowedValues: ['masculino', 'feminino'],
+        optional: false
     },
-
-    "userId": {
-        type: String,
-        label: "Associated User ID"
+    quantidade: {
+        type: Number,
+        label: 'Quantidade',
+        optional: false
     }
-});
-
-Perfis.attachSchema( Perfis_Schema );
-
-// Deny all client-side updates on the Cliente collection
-Perfis.deny({
-    insert() { return true; },
-    update() { return true; },
-    remove() { return true; },
 });

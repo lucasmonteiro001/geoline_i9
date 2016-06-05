@@ -51,7 +51,6 @@ Template.perfisAdd.events({
 
 
         const perfilData = {
-            bairro: template.find('[id="bairro"]').value.trim(),
             faixaEtaria: template.find('[id="faixaEtaria"]').value.trim(),
             faixaDeRenda: template.find('[id="faixaDeRenda"]').value.trim(),
             sexo: (template.find('[name="sexo"]:checked')) ? template.find('[name="sexo"]:checked').value.trim() : "null",
@@ -66,7 +65,7 @@ Template.perfisAdd.events({
                 isNull.push(i);
         }
 
-        if(isNull === 5) {
+        if(isNull === 4) {
             alert("Preencha os campos corretamente!!!");
             return false;
         }

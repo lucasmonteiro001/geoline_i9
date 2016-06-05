@@ -252,6 +252,13 @@
 
 
 <template name="pesquisasView">
+
+    <style>
+        .titulo {
+            font-weight: bold;
+        }
+    </style>
+
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-8">
             <h2 id="nomeObjeto"></h2>
@@ -316,15 +323,19 @@
 
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="nome">Pesquisa</label>
-                            <div class="col-md-12">
+                            <div class="col-sm-2 titulo">
+                                Pesquisa
+                            </div>
+                            <div class="col-sm-10">
                                 <span id="nome"> {{nome}} </span>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="status">Status</label>
-                            <div class="col-md-12">
+                            <div class="col-sm-2 titulo">
+                                Status
+                            </div>
+                            <div class="col-sm-10">
                                 {{#if status}}
                                     Aberta
                                 {{else}}
@@ -334,38 +345,53 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="numMaxEntrevistados">Numero maximo de entrevistados</label>
-                            <div class="col-md-12">
-                                <span>  {{numMaxEntrevistados}} </span>
+                            <div class="col-sm-2 titulo">
+                                Número máximo de entrevistados
+                            </div>
+                            <div class="col-sm-10">
+                                {{numMaxEntrevistados}}
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="entrevistadores">Entrevistadores</label>
-                            <div class="col-md-12">
+
+                            <div class="col-sm-2 titulo">
+                                Entrevistadores
+                            </div>
+                            <div class="col-sm-10">
                                 {{#each entrevistadores}}
                                     <li><span> {{this}} </span></li>
                                 {{/each}}
                             </div>
+
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="candidatos">Candidatos</label>
-                            <div class="col-md-12">
+
+                            <div class="col-sm-2 titulo">
+                                Candidatos
+                            </div>
+                            <div class="col-sm-10">
                                 {{#each candidatos}}
                                     <li><span> {{this}} </span></li>
                                 {{/each}}
                             </div>
+
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="bairros">Bairros</label>
-                            <div class="col-md-12">
+
+                            <div class="col-sm-2 titulo">
+                                Bairros
+                            </div>
+                            <div class="col-sm-10">
                                 {{#each bairros}}
                                     <li><span> {{this}} </span></li>
                                 {{/each}}
                             </div>
+
                         </div>
+
 
 
                     </div>

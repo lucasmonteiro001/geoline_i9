@@ -11,6 +11,7 @@ Meteor.methods({
         check(entrevista, Object);
         check(pesquisaId, String);
 
+
         Pesquisas.update( pesquisaId, {$push: {entrevistas : entrevista}} , ( error ) => {
             if ( error ) {
                 console.log( error );
