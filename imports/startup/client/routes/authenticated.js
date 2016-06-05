@@ -1,8 +1,6 @@
 import "../../../ui/authenticated/perfis/perfis";
 import "../../../ui/authenticated/entrevistas/entrevistas";
 import "../../../ui/authenticated/pesquisas/pesquisas";
-import "../../../ui/authenticated/cliente/cliente";
-import "../../../ui/authenticated/cliente/cliente";
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import '../../../ui/authenticated/index';
 import  '../../../ui/authenticated/users';
@@ -38,15 +36,6 @@ authenticatedRoutes.route( '/', {
 
     }
 });
-
-authenticatedRoutes.route( '/dashboard', {
-    name: 'dashboard',
-    action() {
-        BlazeLayout.render( 'default', { yield: 'dashboard' } );
-        console.log('rota: dashboard');
-    }
-});
-
 authenticatedRoutes.route( '/users', {
     name: 'users',
     triggersEnter: [ blockUnauthorizedAdmin ],
@@ -55,33 +44,6 @@ authenticatedRoutes.route( '/users', {
         console.log('rota: users');
     }
 });
-authenticatedRoutes.route( '/cliente', {
-    name: 'cliente',
-    action() {
-        BlazeLayout.render( 'default', { yield: 'cliente' } );
-    }
-});
-authenticatedRoutes.route( '/clienteAdd', {
-    name: 'clienteAdd',
-    action() {
-        BlazeLayout.render( 'default', { yield: 'clienteAdd' } );
-    }
-});
-
-authenticatedRoutes.route( '/clienteEdit/:_id', {
-    name: 'clienteEdit',
-    action() {
-        BlazeLayout.render( 'default', { yield: 'clienteEdit'} );
-    }
-});
-
-authenticatedRoutes.route( '/clienteView/:_id', {
-    name: 'clienteView',
-    action() {
-        BlazeLayout.render( 'default', { yield: 'clienteView'} );
-    }
-});
-
 authenticatedRoutes.route( '/pesquisas', {
     name: 'pesquisas',
     triggersEnter: [blockUnauthorizedAdmin],

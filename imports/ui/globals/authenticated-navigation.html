@@ -1,6 +1,5 @@
 <template name="authenticatedNavigation">
             <li class="{{currentRoute 'index'}}"><a href="{{pathFor 'index'}}"><i class="fa fa-diamond"></i> <span class="nav-label">Index</span></a></li>
-            <li class="{{currentRoute 'dashboard'}}"><a href="{{pathFor 'dashboard'}}"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a></li>
             {{> authenticatedmenu }}
             {{#if isInRole 'administrador'}}
             <li class="{{currentRoute 'users'}}"><a href="{{pathFor 'users'}}"><i class="fa fa-diamond"></i> <span class="nav-label">Users</span></a></li>
