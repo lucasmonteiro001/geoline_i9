@@ -552,7 +552,6 @@ Template.perfisRelatorio.onCreated(() => {
 
         if(pesquisa) {
 
-            let perfis = pesquisa.perfis;
             let perfisMapa = [{}];
 
             // percorre cada pesquisa para descobrir quais perfis ja foram preenchidos
@@ -560,10 +559,10 @@ Template.perfisRelatorio.onCreated(() => {
 
                 pesquisa.entrevistas.forEach(function(entrevista) {
 
-                    if(perfis) {
+                    if(pesquisa.perfis) {
 
                         // para cada perfil, analisa se ele possui todas as chaves da pesquisa
-                        perfis.map(function (perfil) {
+                        pesquisa.perfis.forEach(function (perfil) {
 
                             if (perfil.faixaEtaria === entrevista.faixaEtaria
                                 && perfil.faixaDeRenda === entrevista.faixaDeRenda
@@ -580,15 +579,6 @@ Template.perfisRelatorio.onCreated(() => {
                                 }
 
 
-                            } else {
-
-                                // se o perfil ja nao foi analisado
-                                if (perfisMapa["nao registrado"]) {
-                                    perfisMapa["nao registrado"].add(entrevista._id);
-                                } else {
-                                    perfisMapa["nao registrado"] = new Set();
-                                    perfisMapa["nao registrado"].add(entrevista._id);
-                                }
                             }
 
                         });
@@ -597,7 +587,6 @@ Template.perfisRelatorio.onCreated(() => {
                 });
 
                 template.perfis.set(perfisMapa);
-                console.log(perfisMapa)
 
             }
         }
@@ -660,7 +649,8 @@ Template.perfisRelatorio.helpers({
 
             // coloca os votos nao registrados
             perfilFinal.push({faixaEtaria: "não registrado", faixaDeRenda: "não registrado",
-                sexo: "não registrado" , meta:"não registrado", quantidade: Template.instance().pesquisa.fetch()[0].perfis.length - votosRegistrados});
+                sexo: "não registrado" , meta:"não registrado",
+                quantidade: Template.instance().pesquisa.fetch()[0].entrevistas.length - votosRegistrados});
 
         }
 

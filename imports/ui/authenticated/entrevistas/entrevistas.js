@@ -66,7 +66,7 @@ Template.entrevistasAdd.events({
                 alert(error.reason);
             } else {
 
-                FlowRouter.go('/entrevistas/' + FlowRouter.getParam('pesquisaId'));
+                FlowRouter.go('/entrevistasList/' + FlowRouter.getParam('pesquisaId'));
             }
         });
 
