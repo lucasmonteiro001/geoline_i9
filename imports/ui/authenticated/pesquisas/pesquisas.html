@@ -291,6 +291,19 @@
                 </div>
             </div>
         </div>
+
+        <div class="wrapper wrapper-content white-bg animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="pull-right btAdd">
+                        <a href="{{pathFor 'perfisAdd'}}/{{pesquisasID}}" class="btn btn-primary">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Adicionar novo perfil</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
 
@@ -358,12 +371,20 @@
                     </div>
                 </div>
             </div>
+
+            {{> perfisRelatorio}}
+
         </div>
 
     {{/each}}
 
+
 </template>
 
+<template name="perfisRelatorio">
+    <h1>Relatório</h1>
+    {{> reactiveTable settings=settings}}
+</template>
 
 <template name="pesquisasList">
         {{> reactiveTable settings=settings}}

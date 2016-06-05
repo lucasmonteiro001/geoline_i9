@@ -39,7 +39,6 @@ Template.pesquisas.onCreated(() => {
         return Pesquisas.find();
     };
 
-
 });
 
 
@@ -215,7 +214,7 @@ Template.pesquisasView.onCreated(() => {
 
     template.id = FlowRouter.getParam('_id');
 
-    template.subscribe('Pesquisas', template.id);
+    template.subscribe('Pesquisas', {_id: template.id});
 
     template.subscribe("Users", SUB_ENTREVISTADOR.filter, SUB_ENTREVISTADOR.projectionNome);
 
@@ -228,7 +227,6 @@ Template.pesquisasView.onCreated(() => {
         let pesquisa = template.pesquisa.fetch()[0];
 
         if(pesquisa) {
-
             template.entrevistadores.set(pesquisa.entrevistadores);
         }
 
@@ -254,13 +252,17 @@ Template.pesquisasView.helpers({
     },
     entrevistadores () {
 
-        let entrevstadores = Users.find({
+        let entrevistadores = Users.find({
             _id: { $in: Template.instance().entrevistadores.get()
             }}).fetch();
 
-        let entrevistadoresNome = entrevistadores.map(function(val) {
-               return val.nome;
+        let entrevistadoresNome;
+
+        if(entrevistadores) {
+            entrevistadoresNome = entrevistadores.map(function(val) {
+                return val.nome;
             });
+        }
 
         return entrevistadoresNome;
     }
@@ -342,7 +344,7 @@ Template.pesquisasEdit.onCreated(function () {
 
     let template = Template.instance();
 
-    template.subscribe('Pesquisas', FlowRouter.getParam('_id'), {
+    template.subscribe('Pesquisas', {_id: FlowRouter.getParam('_id')}, {
 
         onReady: function() {
 
@@ -527,7 +529,156 @@ Template.pesquisasList.helpers({
                 }}
             ]
         };
-    }
+    },
 });
 
 //=============== FIM PESQUISAS LIST ==================//
+
+//===========
+
+Template.perfisRelatorio.onCreated(() => {
+
+    let template = Template.instance();
+
+    template.subscribe("Pesquisas", {_id: FlowRouter.getParam("_id")});
+
+    template.pesquisa = Pesquisas.find();
+
+    template.perfis = new ReactiveVar({});
+
+    template.autorun(function() {
+
+        let pesquisa = template.pesquisa.fetch()[0];
+
+        if(pesquisa) {
+
+            let perfis = pesquisa.perfis;
+            let perfisMapa = [{}];
+
+            // percorre cada pesquisa para descobrir quais perfis ja foram preenchidos
+            if(pesquisa.entrevistas) {
+
+                pesquisa.entrevistas.forEach(function(entrevista) {
+
+                    if(perfis) {
+
+                        // para cada perfil, analisa se ele possui todas as chaves da pesquisa
+                        perfis.map(function (perfil) {
+
+                            if (perfil.faixaEtaria === entrevista.faixaEtaria
+                                && perfil.faixaDeRenda === entrevista.faixaDeRenda
+                                && perfil.sexo === entrevista.sexo) {
+
+                                let key = `faixaEtaria:${perfil.faixaEtaria};faixaDeRenda:${perfil.faixaDeRenda};sexo:${perfil.sexo};meta:${perfil.quantidade}`;
+
+                                // se o perfil ja nao foi analisado
+                                if (perfisMapa[key]) {
+                                    perfisMapa[key].add(entrevista._id);
+                                } else {
+                                    perfisMapa[key] = new Set();
+                                    perfisMapa[key].add(entrevista._id);
+                                }
+
+
+                            } else {
+
+                                // se o perfil ja nao foi analisado
+                                if (perfisMapa["nao registrado"]) {
+                                    perfisMapa["nao registrado"].add(entrevista._id);
+                                } else {
+                                    perfisMapa["nao registrado"] = new Set();
+                                    perfisMapa["nao registrado"].add(entrevista._id);
+                                }
+                            }
+
+                        });
+                    }
+
+                });
+
+                template.perfis.set(perfisMapa);
+                console.log(perfisMapa)
+
+            }
+        }
+    });
+
+});
+
+Template.perfisRelatorio.helpers({
+    'settings': function () {
+
+        let perfis = Template.instance().perfis.get();
+        let perfisImpressao = [];
+        let perfilFinal = [];
+
+        if(perfis) {
+
+            for(let key in perfis) {
+
+                // descarta a key 0
+                if(key !== "0") {
+
+                    let attrs = key.split(";");
+
+                    //se o tamanho for igual a 1, quer dizer que nao ha registro de perfil relacionado
+                    if(attrs.length === 1) {
+                        perfisImpressao[key] =
+                            {faixaEtaria: "não registrado", faixaDeRenda: "não registrado",
+                                sexo: "não registrado" , meta:"não registrado", quantidade: perfis[key].size};
+                    }
+                    else {
+                        perfisImpressao[key] =
+                            {faixaEtaria: attrs[0].split(":")[1], faixaDeRenda: attrs[1].split(":")[1],
+                                sexo: attrs[2].split(":")[1], meta:parseInt(attrs[3].split(":")[1]), quantidade: perfis[key].size};
+                    }
+
+                }
+
+            }
+
+            let votosRegistrados = 0;
+
+            Template.instance().pesquisa.fetch()[0].perfis.forEach(function(perfil) {
+
+                let key = `faixaEtaria:${perfil.faixaEtaria};faixaDeRenda:${perfil.faixaDeRenda};sexo:${perfil.sexo};meta:${perfil.quantidade}`;
+
+                // se ha alguma entrevista relacionada ao perfil
+                if(perfisImpressao[key]) {
+                    perfilFinal.push({faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
+                        sexo: perfil.sexo, meta: perfil.quantidade, quantidade: perfisImpressao[key].quantidade});
+
+                    votosRegistrados += perfisImpressao[key].quantidade;
+                }
+                // se nao existe entrevista, tudo eh zero
+                else {
+                    perfilFinal.push({faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
+                        sexo: perfil.sexo, meta: perfil.quantidade, quantidade: 0});
+                }
+
+            });
+
+            // coloca os votos nao registrados
+            perfilFinal.push({faixaEtaria: "não registrado", faixaDeRenda: "não registrado",
+                sexo: "não registrado" , meta:"não registrado", quantidade: Template.instance().pesquisa.fetch()[0].perfis.length - votosRegistrados});
+
+        }
+
+        return {
+            collection: perfilFinal || [],
+            rowsPerPage: 10,
+            showFilter: true,
+            showRowCount: true,
+            showColumnToggles: true,
+            multiColumnSort: true,
+            fields: [
+                {key:'faixaEtaria', label:'Faixa Etária'},
+                {key:'faixaDeRenda', label:'Faixa de Renda'},
+                {key:'sexo', label:'Sexo'},
+                {key:'quantidade', label:'Quantidade de votos'},
+                {key:'meta', label:'Meta'},
+            ]
+        };
+    }
+
+});

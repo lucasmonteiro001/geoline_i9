@@ -1,0 +1,297 @@
+<template name="perfis">
+    {{> pageHeading title='Lista de perfiss' }}
+
+    <div class="wrapper wrapper-content white-bg animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="pull-right btAdd">
+                    <a href="{{pathFor 'perfisAdd'}}" class="btn btn-primary">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Adicionar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                {{> perfisList}}
+            </div>
+        </div>
+
+    </div>
+
+</template>
+
+<template name="perfisAdd">
+    {{> pageHeading title='Cadastrar perfis' }}
+
+
+    <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+
+        {{#each pesquisa}}
+
+            <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+                <form class="form-horizontal row-border" id="userForm" data-toggle="validator" role="form">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel-body">
+
+                                <h3>{{nome}}</h3>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="bairro">Bairro</label>
+                                    <div class="col-md-10">
+                                        <select name="bairro" id="bairro" required>
+                                            <option selected value="null">-</option>
+                                            {{#each bairros}}
+                                                <option value="{{this}}">{{this}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="faixaEtaria">Faixa etária</label>
+                                    <div class="col-md-10">
+                                        <select name="faixaEtaria" id="faixaEtaria" required>
+                                            <option selected value="null">-</option>
+                                            <option value='15 - 19'>15 - 19</option>
+                                            <option value="20 - 24">20 - 24</option>
+                                            <option value="25 - 29">25 - 29</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="faixaDeRenda">Faixa de renda</label>
+                                    <div class="col-md-10">
+                                        <select name="faixaDeRenda" id="faixaDeRenda" required>
+                                            <option selected value="null">-</option>
+                                            <option value='1'>Até 1 salário mínimo</option>
+                                            <option value="2">Até 2 salários mínimos</option>
+                                            <option value="5">Até 5 salários mínimos</option>
+                                            <option value="5+">Acima de 5 salários mínimos</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Sexo</label>
+                                    <div class="col-md-10">
+
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label>
+                                                <input type="radio" name="sexo" value="feminino">
+                                                Feminino
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="sexo" value="masculino">
+                                                Masculino
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="quantidade">Quantidade</label>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control" id="quantidade">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pull-right btAdd">
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                <a href="{{pathFor 'pesquisasView'}}/{{pesquisaId}}" class="btn">Voltar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        {{/each}}
+
+
+    </div>
+
+
+</template>
+
+
+<template name="perfisEdit">
+    {{ perfiss }}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-12">
+            <h2 id="nomeObjeto"></h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{pathFor route=home}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{pathFor route=perfis}}">Lista de perfiss</a>
+                </li>
+
+                <li class="active">
+                    <strong id="bc-nomeObjeto"></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+
+    <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+        <form class="form-horizontal row-border" id="userForm" data-toggle="validator" role="form">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel-body">
+                    
+
+           <div class="form-group">
+              <label class="col-md-2 control-label" for="nome">Informe um nome</label>
+              <div class="col-md-10">
+                <input type="text" id="nome" name="nome" class="form-control" >
+              </div>
+            </div>
+
+
+           <div class="form-group">
+              <label class="col-md-2 control-label" for="endereco">Informe o Endere�o</label>
+              <div class="col-md-10">
+                <textarea class="form-control" rows="7" id="endereco" name="endereco"></textarea>
+              </div>
+           </div>
+
+
+
+
+           <div class="form-group">
+              <label class="col-md-2 control-label" for="telefone">Telefone/Cel:</label>
+              <div class="col-md-10">
+                <input type="text" id="telefone" name="telefone" class="form-control" >
+              </div>
+            </div>
+
+
+           <div class="form-group">
+              <label class="col-md-2 control-label" for="Email">Meu Email</label>
+              <div class="col-md-10">
+                <input type="text" id="Email" name="Email" class="form-control" >
+              </div>
+            </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="pull-right btAdd">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <a href="{{pathFor 'perfisView'}}/{{perfisID}}" class="btn">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</template>
+
+
+<template name="perfisView">
+    {{ perfiss }}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-8">
+            <h2 id="nomeObjeto"></h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{pathFor route=home}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{pathFor route=perfis}}">Lista de perfiss</a>
+                </li>
+
+                <li class="active">
+                    <strong id="bc-nomeObjeto"></strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-4">
+            <div class="pull-right">
+                <a id="btn-criar-chamado-voltar" class="btn btn-default" href="{{pathFor 'perfis'}}">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    Voltar
+                </a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">
+                        Ações <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a id="linkEdit" href="{{pathFor 'perfisEdit'}}/{{perfisID}}"><i
+                                class="icon icon-pencil"></i>
+                            Editar...</a></li>
+                        <li class="divider"></li>
+                        <li><a id="linkExcluir" href="#!" value="{{perfisID}}"><i class="icon icon-pencil"></i>
+                            Excluir...</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
+            <div class="row form-horizontal row-border">
+                <div class="col-lg-12">
+                    <div class="panel-body">
+                        
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="Email">Informe um Email</label>
+                            <div class="col-md-10">
+                                <span id="Email"> </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="telefone">Informe um telefone</label>
+                            <div class="col-md-10">
+                                <span id="telefone"> </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="endereco">Informe um endereco</label>
+                            <div class="col-md-10">
+                                <span id="endereco"> </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="nome">Informe um nome</label>
+                            <div class="col-md-10">
+                                <span id="nome"> </span>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+</template>
+

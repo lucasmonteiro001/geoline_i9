@@ -4,6 +4,9 @@ import { Mongo } from 'meteor/mongo';
 export const Pesquisas = new Mongo.Collection('pesquisas');
 
 const Entrevista = new SimpleSchema({
+    _id: {
+        type: String
+    },
     candidato : {
         type: String,
         label: 'Candidato',
@@ -28,6 +31,35 @@ const Entrevista = new SimpleSchema({
         type: String,
         label: 'Sexo',
         allowedValues: ['masculino', 'feminino'],
+        optional: false
+    }
+});
+
+const Perfil = new SimpleSchema({
+    bairro : {
+        type: String,
+        label: 'Bairro',
+        optional: false
+    },
+    faixaEtaria : {
+        type: String,
+        label: 'Faixa etária',
+        optional: false
+    },
+    faixaDeRenda : {
+        type: String,
+        label: 'Faixa de renda',
+        optional: false
+    },
+    sexo: {
+        type: String,
+        label: 'Sexo',
+        allowedValues: ['masculino', 'feminino'],
+        optional: false
+    },
+    quantidade: {
+        type: Number,
+        label: 'Quantidade',
         optional: false
     }
 });
@@ -78,6 +110,11 @@ Pesquisas.schema = new SimpleSchema({
     entrevistas: {
         type: [Entrevista],
         label: 'Entrevistas',
+        optional: true
+    },
+    perfis: {
+        type: [Perfil],
+        label: 'Perfil',
         optional: true
     }
 

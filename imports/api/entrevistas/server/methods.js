@@ -6,6 +6,7 @@ Meteor.methods({
     'entrevistas.insert' ( pesquisaId, entrevista ) {
 
         entrevista.entrevistador = this.userId;
+        entrevista._id = Random.id();
 
         check(entrevista, Object);
         check(pesquisaId, String);

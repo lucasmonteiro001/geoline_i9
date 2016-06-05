@@ -1,3 +1,4 @@
+import "../../../ui/authenticated/perfis/perfis";
 import "../../../ui/authenticated/entrevistas/entrevistas";
 import "../../../ui/authenticated/pesquisas/pesquisas";
 import "../../../ui/authenticated/cliente/cliente";
@@ -5,13 +6,17 @@ import "../../../ui/authenticated/cliente/cliente";
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import '../../../ui/authenticated/index';
 import  '../../../ui/authenticated/users';
-
+import {Meteor} from 'meteor/meteor';
 
 const blockUnauthorizedAdmin = ( context, redirect ) => {
-    if ( Meteor.userId() && !Roles.userIsInRole( Meteor.userId(), 'administrador' ) ) {
-        Bert.alert('Acesso nao permitido!', 'danger')
-        redirect('index');
-    }
+
+    // setTimeout(function() {
+        if (!Roles.userIsInRole( Meteor.userId(), 'administrador' ) ) {
+            Bert.alert('Acesso nao permitido!', 'danger')
+            redirect('index');
+        }
+    // }, 1200);
+
 };
 
 const authenticatedRedirect = ( context, redirect ) => {
@@ -51,10 +56,10 @@ authenticatedRoutes.route( '/users', {
     }
 });
 authenticatedRoutes.route( '/cliente', {
-	name: 'cliente',
-	action() {
-		BlazeLayout.render( 'default', { yield: 'cliente' } );
-	} 
+    name: 'cliente',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'cliente' } );
+    }
 });
 authenticatedRoutes.route( '/clienteAdd', {
     name: 'clienteAdd',
@@ -78,60 +83,84 @@ authenticatedRoutes.route( '/clienteView/:_id', {
 });
 
 authenticatedRoutes.route( '/pesquisas', {
-	name: 'pesquisas',
+    name: 'pesquisas',
     triggersEnter: [blockUnauthorizedAdmin],
-	action() {
-		BlazeLayout.render( 'default', { yield: 'pesquisas' } );
-	} 
+    action() {
+        BlazeLayout.render( 'default', { yield: 'pesquisas' } );
+    }
 });
 authenticatedRoutes.route( '/pesquisasAdd', {
-	name: 'pesquisasAdd',
+    name: 'pesquisasAdd',
     triggersEnter: [blockUnauthorizedAdmin],
-	action() {
-		BlazeLayout.render( 'default', { yield: 'pesquisasAdd' } );
-	} 
+    action() {
+        BlazeLayout.render( 'default', { yield: 'pesquisasAdd' } );
+    }
 });
 authenticatedRoutes.route( '/pesquisasEdit/:_id', {
-	name: 'pesquisasEdit',
+    name: 'pesquisasEdit',
     triggersEnter: [blockUnauthorizedAdmin],
-	action() {
-		BlazeLayout.render( 'default', { yield: 'pesquisasEdit' } );
-	} 
+    action() {
+        BlazeLayout.render( 'default', { yield: 'pesquisasEdit' } );
+    }
 });
 authenticatedRoutes.route( '/pesquisasView/:_id', {
-	name: 'pesquisasView',
+    name: 'pesquisasView',
     triggersEnter: [blockUnauthorizedAdmin],
-	action() {
-		BlazeLayout.render( 'default', { yield: 'pesquisasView' } );
-	} 
+    action() {
+        BlazeLayout.render( 'default', { yield: 'pesquisasView' } );
+    }
 });
 authenticatedRoutes.route( '/entrevistas', {
-	name: 'entrevistas',
-	action() {
-		BlazeLayout.render( 'default', { yield: 'entrevistas' } );
-	} 
+    name: 'entrevistas',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'entrevistas' } );
+    }
 });
 authenticatedRoutes.route( '/entrevistasAdd/:pesquisaId', {
-	name: 'entrevistasAdd',
-	action() {
-		BlazeLayout.render( 'default', { yield: 'entrevistasAdd' } );
-	} 
+    name: 'entrevistasAdd',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'entrevistasAdd' } );
+    }
 });
 authenticatedRoutes.route( '/entrevistasEdit/:_id', {
-	name: 'entrevistasEdit',
-	action() {
-		BlazeLayout.render( 'default', { yield: 'entrevistasEdit' } );
-	} 
+    name: 'entrevistasEdit',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'entrevistasEdit' } );
+    }
 });
 authenticatedRoutes.route( '/entrevistasView/:_id', {
-	name: 'entrevistasView',
-	action() {
-		BlazeLayout.render( 'default', { yield: 'entrevistasView' } );
-	} 
+    name: 'entrevistasView',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'entrevistasView' } );
+    }
 });
 authenticatedRoutes.route( '/entrevistasList/:pesquisaId', {
     name: 'entrevistasList',
     action() {
         BlazeLayout.render( 'default', { yield: 'entrevistasList' } );
+    }
+});
+authenticatedRoutes.route( '/perfis', {
+    name: 'perfis',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'perfis' } );
+    }
+});
+authenticatedRoutes.route( '/perfisAdd/:pesquisaId', {
+    name: 'perfisAdd',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'perfisAdd' } );
+    }
+});
+authenticatedRoutes.route( '/perfisEdit/:_id', {
+    name: 'perfisEdit',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'perfisEdit' } );
+    }
+});
+authenticatedRoutes.route( '/perfisView/:_id', {
+    name: 'perfisView',
+    action() {
+        BlazeLayout.render( 'default', { yield: 'perfisView' } );
     }
 });
