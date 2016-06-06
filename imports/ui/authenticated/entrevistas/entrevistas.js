@@ -5,6 +5,7 @@ import { Entrevistas } from '../../../api/entrevistas/entrevistas.js'
 import { Pesquisas } from '../../../api/pesquisas/pesquisas';
 import { Users } from '../../../api/users/users';
 import {FlowRouter} from 'meteor/kadira:flow-router';
+import '../../../vendors/js/jquery.steps-1.1.0/jquery.steps.min';
 
 
 let template;

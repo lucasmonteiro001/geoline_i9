@@ -5,7 +5,9 @@ import { Pesquisas } from '../../../api/pesquisas/pesquisas.js';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import {Users} from '../../../api/users/users';
 import { ReactiveVar } from 'meteor/reactive-var';
-
+import '../../../vendors/js/taggingJS-master/tagging.min';
+import '../../../vendors/js/loopj-jquery-tokeninput-201d2d1/src/jquery.tokeninput';
+import '../../../vendors/js/loopj-jquery-tokeninput-201d2d1/styles/token-input-custom.css';
 
 let template;
 
