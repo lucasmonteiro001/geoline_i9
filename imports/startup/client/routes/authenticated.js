@@ -6,6 +6,7 @@ import '../../../ui/authenticated/index';
 import  '../../../ui/authenticated/users';
 import {Meteor} from 'meteor/meteor';
 
+
 const blockUnauthorizedAdmin = ( context, redirect ) => {
 
     if (!Roles.userIsInRole( Meteor.userId(), 'administrador' ) ) {

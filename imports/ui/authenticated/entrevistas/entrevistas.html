@@ -20,96 +20,591 @@
     {{#each pesquisa}}
 
         <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
-            <form class="form-horizontal row-border" id="userForm" data-toggle="validator" role="form">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel-body">
+            <!--<form class="form-horizontal row-border" id="userForm" data-toggle="validator" role="form">-->
+                <!--<div class="row">-->
+                    <!--<div class="col-lg-12">-->
+                        <!--<div class="panel-body">-->
 
-                            <h3>{{nome}}</h3>
+                            <!--<h3>{{nome}}</h3>-->
 
 
-                            <div class="form-group">
-                                <label class="col-md-2 control-label" for="candidato">Candidato</label>
-                                <div class="col-md-10">
-                                    <select name="candidato" id="candidato" required>
-                                        <option disabled selected value=""> Selecione um candidato </option>
-                                        {{#each candidatos}}
-                                            <option value="{{this}}">{{this}}</option>
-                                        {{/each}}
-                                    </select>
-                                </div>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-md-2 control-label" for="candidato">Candidato</label>-->
+                                <!--<div class="col-md-10">-->
+                                    <!--<select name="candidato" id="candidato" required>-->
+                                        <!--<option disabled selected value=""> Selecione um candidato </option>-->
+                                        <!--{{#each candidatos}}-->
+                                            <!--<option value="{{this}}">{{this}}</option>-->
+                                        <!--{{/each}}-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
 
-                            <div class="form-group">
-                                <label class="col-md-2 control-label" for="bairro">Bairro</label>
-                                <div class="col-md-10">
-                                    <select name="bairro" id="bairro" required>
-                                        <option disabled selected value=""> Selecione um bairro </option>
-                                        {{#each bairros}}
-                                            <option value="{{this}}">{{this}}</option>
-                                        {{/each}}
-                                    </select>
-                                </div>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-md-2 control-label" for="bairro">Bairro</label>-->
+                                <!--<div class="col-md-10">-->
+                                    <!--<select name="bairro" id="bairro" required>-->
+                                        <!--<option disabled selected value=""> Selecione um bairro </option>-->
+                                        <!--{{#each bairros}}-->
+                                            <!--<option value="{{this}}">{{this}}</option>-->
+                                        <!--{{/each}}-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
 
-                            <div class="form-group">
-                                <label class="col-md-2 control-label" for="faixaEtaria">Faixa etária</label>
-                                <div class="col-md-10">
-                                    <select name="faixaEtaria" id="faixaEtaria" required>
-                                        <option disabled selected value=""> Selecione a faixa etária </option>
-                                        <option value='15 - 19'>15 - 19</option>
-                                        <option value="20 - 24">20 - 24</option>
-                                        <option value="25 - 29">25 - 29</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-md-2 control-label" for="faixaEtaria">Faixa etária</label>-->
+                                <!--<div class="col-md-10">-->
+                                    <!--<select name="faixaEtaria" id="faixaEtaria" required>-->
+                                        <!--<option disabled selected value=""> Selecione a faixa etária </option>-->
+                                        <!--<option value='15 - 19'>15 - 19</option>-->
+                                        <!--<option value="20 - 24">20 - 24</option>-->
+                                        <!--<option value="25 - 29">25 - 29</option>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
 
-                            <div class="form-group">
-                                <label class="col-md-2 control-label" for="faixaDeRenda">Faixa de renda</label>
-                                <div class="col-md-10">
-                                    <select name="faixaDeRenda" id="faixaDeRenda" required>
-                                        <option disabled selected value=""> Selecione a faixa de renda </option>
-                                        <option value='1'>Até 1 salário mínimo</option>
-                                        <option value="2">Até 2 salários mínimos</option>
-                                        <option value="5">Até 5 salários mínimos</option>
-                                        <option value="5+">Acima de 5 salários mínimos</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-md-2 control-label" for="faixaDeRenda">Faixa de renda</label>-->
+                                <!--<div class="col-md-10">-->
+                                    <!--<select name="faixaDeRenda" id="faixaDeRenda" required>-->
+                                        <!--<option disabled selected value=""> Selecione a faixa de renda </option>-->
+                                        <!--<option value='1'>Até 1 salário mínimo</option>-->
+                                        <!--<option value="2">Até 2 salários mínimos</option>-->
+                                        <!--<option value="5">Até 5 salários mínimos</option>-->
+                                        <!--<option value="5+">Acima de 5 salários mínimos</option>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
 
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Sexo</label>
-                                <div class="col-md-10">
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-md-2 control-label">Sexo</label>-->
+                                <!--<div class="col-md-10">-->
 
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label>
-                                            <input type="radio" name="sexo" value="feminino">
-                                            Feminino
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="sexo" value="masculino">
-                                            Masculino
-                                        </label>
-                                    </div>
+                                    <!--<div class="btn-group" data-toggle="buttons">-->
+                                        <!--<label>-->
+                                            <!--<input type="radio" name="sexo" value="feminino">-->
+                                            <!--Feminino-->
+                                        <!--</label>-->
+                                        <!--<label>-->
+                                            <!--<input type="radio" name="sexo" value="masculino">-->
+                                            <!--Masculino-->
+                                        <!--</label>-->
+                                    <!--</div>-->
 
-                                </div>
-                            </div>
+                                <!--</div>-->
+                            <!--</div>-->
 
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="pull-right btAdd">
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                            <a href="{{pathFor 'entrevistasList'}}/{{pesquisaId}}" class="btn">Voltar</a>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<div class="col-lg-12">-->
+                        <!--<div class="pull-right btAdd">-->
+                            <!--<button type="submit" class="btn btn-primary">Salvar</button>-->
+                            <!--<a href="{{pathFor 'entrevistasList'}}/{{pesquisaId}}" class="btn">Voltar</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</form>-->
         </div>
 
+        <form id="example-form" action="#">
+            <div>
+                <h3>Candidato</h3>
+                <section>
+                    <div class="form-group">
+                        <div class="conteudo-wizard">
+                            {{#each candidatos}}
+                                <div class="radio">
+                                    <input name="candidatoX" id="form-candidato-{{this}}" class="form-el" type="radio"  value="{{this}}">
+                                    <label for="form-candidato-{{this}}">{{this}}</label>
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
+
+                </section>
+                <h3>Bairro</h3>
+                <section>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            {{#each bairros}}
+                                <div class="radio">
+                                    <input name="bairroX" id="form-bairro-{{this}}" class="form-el" type="radio"  value="{{this}}">
+                                    <label for="form-bairro-{{this}}">{{this}}</label>
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </section>
+                <h3>Faixa etária</h3>
+                <section>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <div class="radio">
+                                <input name="faixaEtariaX" class="form-el" id="form-faixaEtaria-15-19" type="radio"  value="15 - 19">
+                                <label for="form-faixaEtaria-15-19">
+                                    15 - 19
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <input name="faixaEtariaX" class="form-el" id="form-faixaEtaria-20-24" type="radio"  value="20 - 24">
+                                <label for="form-faixaEtaria-20-24">20 - 24</label>
+                            </div>
+                            <div class="radio">
+                                <input name="faixaEtariaX" class="form-el" id="form-faixaEtaria-25-29" type="radio" value="25 - 29">
+                                <label for="form-faixaEtaria-25-29">25 - 29</label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <h3>Faixa de renda</h3>
+                <section>
+
+                        <div class="radio">
+                            <input name="faixaDeRendaX" id="form-faixaDeRenda-1" class="form-el" type="radio"  value="1">
+                            <label for="form-faixaDeRenda-1">Até 1 salário mínimo</label>
+                        </div>
+                        <div class="radio">
+                            <input name="faixaDeRendaX" id="form-faixaDeRenda-2" class="form-el" type="radio"  value="2">
+                            <label for="form-faixaDeRenda-2">Até 2 salários mínimos</label>
+                        </div>
+                        <div class="radio">
+                            <input name="faixaDeRendaX" id="form-faixaDeRenda-5" class="form-el" type="radio"  value="5">
+                            <label for="form-faixaDeRenda-5">Até 5 salários mínimos</label>
+                        </div>
+                        <div class="radio">
+                            <input name="faixaDeRendaX" id="form-faixaDeRenda-5+" class="form-el" type="radio"  value="5+">
+                            <label for="form-faixaDeRenda-5+">Acima de 5 salários mínimos</label>
+                        </div>
+
+
+                </section>
+                <h3>Sexo</h3>
+                <section>
+                    <div class="col-md-10">
+
+                        <div class="radio">
+                            <input name="sexoX" class="form-el" id="form-sexo-feminino" type="radio"  value="feminino">
+                            <label for="form-sexo-feminino">Feminino</label>
+                        </div>
+
+                        <div class="radio">
+                            <input name="sexoX" class="form-el" id="form-sexo-masculino" type="radio"  value="masculino">
+                            <label for="form-sexo-masculino">Masculino</label>
+                        </div>
+
+                    </div>
+                </section>
+                <h3>Confirmação</h3>
+                <section>
+                    <div class="confirmar">
+
+                    </div>
+                </section>
+            </div>
+        </form>
+
     {{/each}}
+
+
+    <style>
+        /*
+    Common
+*/
+        [href="#next"] {
+            visibility: hidden;
+        }
+
+        .conteudo-wizard {
+            /*text-align: center;*/
+        }
+        .wizard,
+        .tabcontrol
+        {
+            display: block;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .wizard a,
+        .tabcontrol a
+        {
+            outline: 0;
+        }
+
+        .wizard ul,
+        .tabcontrol ul
+        {
+            list-style: none !important;
+            padding: 0;
+            margin: 0;
+        }
+
+        .wizard ul > li,
+        .tabcontrol ul > li
+        {
+            display: block;
+            padding: 0;
+        }
+
+        /* Accessibility */
+        .wizard > .steps .current-info,
+        .tabcontrol > .steps .current-info
+        {
+            position: absolute;
+            left: -999em;
+        }
+
+        .wizard > .content > .title,
+        .tabcontrol > .content > .title
+        {
+            position: absolute;
+            left: -999em;
+        }
+
+
+
+        /*
+            Wizard
+        */
+
+        .wizard > .steps
+        {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+
+        .wizard.vertical > .steps
+        {
+            display: inline;
+            float: left;
+            width: 30%;
+        }
+
+        .wizard > .steps .number
+        {
+            font-size: 1.429em;
+        }
+
+        .wizard > .steps > ul > li
+        {
+            width: 20%;
+        }
+
+        .wizard > .steps > ul > li,
+        .wizard > .actions > ul > li
+        {
+            float: left;
+        }
+
+        .wizard.vertical > .steps > ul > li
+        {
+            float: none;
+            width: 100%;
+        }
+
+        .wizard > .steps a,
+        .wizard > .steps a:hover,
+        .wizard > .steps a:active
+        {
+            display: block;
+            width: auto;
+            margin: 0 0.5em 0.5em;
+            padding: 1em 1em;
+            text-decoration: none;
+
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+
+        .wizard > .steps .disabled a,
+        .wizard > .steps .disabled a:hover,
+        .wizard > .steps .disabled a:active
+        {
+            background: #eee;
+            color: #aaa;
+            cursor: default;
+        }
+
+        .wizard > .steps .current a,
+        .wizard > .steps .current a:hover,
+        .wizard > .steps .current a:active
+        {
+            background: #2184be;
+            color: #fff;
+            cursor: default;
+        }
+
+        .wizard > .steps .done a,
+        .wizard > .steps .done a:hover,
+        .wizard > .steps .done a:active
+        {
+            background: #9dc8e2;
+            color: #fff;
+        }
+
+        .wizard > .steps .error a,
+        .wizard > .steps .error a:hover,
+        .wizard > .steps .error a:active
+        {
+            background: #ff3111;
+            color: #fff;
+        }
+
+        .wizard > .content
+        {
+            width: 50% !important;
+            margin-left: 25% !important;
+            overflow: scroll !important;
+            height: 18em;
+            background: #eee;
+            display: block;
+            margin: 0.5em;
+            min-height: 10em;
+            overflow: hidden;
+            position: relative;
+            width: auto;
+
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+
+        .wizard.vertical > .content
+        {
+            display: inline;
+            float: left;
+            margin: 0 2.5% 0.5em 2.5%;
+            width: 65%;
+        }
+
+        .wizard > .content > .body
+        {
+            float: left;
+            position: absolute;
+            width: 50%;
+            margin-left: 25%;
+            height: 95%;
+            padding: 2.5%;
+        }
+
+        .wizard > .content > .body ul
+        {
+            list-style: disc !important;
+        }
+
+        .wizard > .content > .body ul > li
+        {
+            display: list-item;
+        }
+
+        .wizard > .content > .body > iframe
+        {
+            border: 0 none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .wizard > .content > .body input
+        {
+            display: block;
+            border: 1px solid #ccc;
+        }
+
+        .wizard > .content > .body input[type="checkbox"]
+        {
+            display: inline-block;
+        }
+
+        .wizard > .content > .body input.error
+        {
+            background: rgb(251, 227, 228);
+            border: 1px solid #fbc2c4;
+            color: #8a1f11;
+        }
+
+        .wizard > .content > .body label
+        {
+            display: inline-block;
+            margin-bottom: 0.5em;
+        }
+
+        .wizard > .content > .body label.error
+        {
+            color: #8a1f11;
+            display: inline-block;
+            margin-left: 1.5em;
+        }
+
+        .wizard > .actions
+        {
+            position: relative;
+            display: block;
+            text-align: right;
+            width: 100%;
+        }
+
+        .wizard.vertical > .actions
+        {
+            display: inline;
+            float: right;
+            margin: 0 2.5%;
+            width: 95%;
+        }
+
+        .wizard > .actions > ul
+        {
+            display: inline-block;
+            text-align: right;
+        }
+
+        .wizard > .actions > ul > li
+        {
+            margin: 0 0.5em;
+        }
+
+        .wizard.vertical > .actions > ul > li
+        {
+            margin: 0 0 0 1em;
+        }
+
+        .wizard > .actions a,
+        .wizard > .actions a:hover,
+        .wizard > .actions a:active
+        {
+            background: #2184be;
+            color: #fff;
+            display: block;
+            padding: 0.5em 1em;
+            text-decoration: none;
+
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+
+        .wizard > .actions .disabled a,
+        .wizard > .actions .disabled a:hover,
+        .wizard > .actions .disabled a:active
+        {
+            background: #eee;
+            color: #aaa;
+        }
+
+        .wizard > .loading
+        {
+        }
+
+        .wizard > .loading .spinner
+        {
+        }
+
+
+
+        /*
+            Tabcontrol
+        */
+
+        .tabcontrol > .steps
+        {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+
+        .tabcontrol > .steps > ul
+        {
+            position: relative;
+            margin: 6px 0 0 0;
+            top: 1px;
+            z-index: 1;
+        }
+
+        .tabcontrol > .steps > ul > li
+        {
+            float: left;
+            margin: 5px 2px 0 0;
+            padding: 1px;
+
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .tabcontrol > .steps > ul > li:hover
+        {
+            background: #edecec;
+            border: 1px solid #bbb;
+            padding: 0;
+        }
+
+        .tabcontrol > .steps > ul > li.current
+        {
+            background: #fff;
+            border: 1px solid #bbb;
+            border-bottom: 0 none;
+            padding: 0 0 1px 0;
+            margin-top: 0;
+        }
+
+        .tabcontrol > .steps > ul > li > a
+        {
+            color: #5f5f5f;
+            display: inline-block;
+            border: 0 none;
+            margin: 0;
+            padding: 10px 30px;
+            text-decoration: none;
+        }
+
+        .tabcontrol > .steps > ul > li > a:hover
+        {
+            text-decoration: none;
+        }
+
+        .tabcontrol > .steps > ul > li.current > a
+        {
+            padding: 15px 30px 10px 30px;
+        }
+
+        .tabcontrol > .content
+        {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            height: 35em;
+            overflow: hidden;
+            border-top: 1px solid #bbb;
+            padding-top: 20px;
+        }
+
+        .tabcontrol > .content > .body
+        {
+            float: left;
+            position: absolute;
+            width: 95%;
+            height: 95%;
+            padding: 2.5%;
+        }
+
+        .tabcontrol > .content > .body ul
+        {
+            list-style: disc !important;
+        }
+
+        .tabcontrol > .content > .body ul > li
+        {
+            display: list-item;
+        }
+
+    </style>
 
 </template>
 

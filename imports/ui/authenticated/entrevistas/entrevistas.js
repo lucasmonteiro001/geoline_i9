@@ -33,6 +33,54 @@ Template.entrevistasAdd.onCreated(() => {
 
     template.pesquisa = Pesquisas.find({_id: template.pesquisaId});
 
+    setTimeout(function() {
+
+        var form = $("#example-form");
+
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            onStepChanged: function (event, currentIndex) {
+
+                // se o formulario esta na ultima pagina
+                if($('.last.current').length === 1) {
+
+                    let candidato = $( "input[id^='form-candidato']:checked" ).val(),
+                        bairro = $( "input[id^='form-bairro']:checked" ).val(),
+                        faixaEtaria = $( "input[id^='form-faixaEtaria']:checked" ).val(),
+                        faixaDeRenda = $( "input[id^='form-faixaDeRenda']:checked" ).val(),
+                        sexo = $( "input[id^='form-sexo']:checked" ).val();
+
+                    $('.confirmar').html(`Os dados abaixo estão corretos?<br><br>Candidato: ${candidato}<br><br>Bairro: ${bairro}<br><br>Faixa etária: ${faixaEtaria}<br><br>Faixa de renda: ${faixaDeRenda}<br><br>Sexo: ${sexo}`)
+
+                }
+
+            },
+            onStepChanging: function (event, currentIndex, newIndex)
+            {
+                // Allways allow step back to the previous step even if the current step is not valid!
+                if (currentIndex > newIndex)
+                {
+                    return true;
+                }
+
+                form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinishing: function (event, currentIndex)
+            {
+                form.validate().settings.ignore = ":disabled";
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex)
+            {
+                event.preventDefault();
+            }
+        });
+
+    }, 100);
+
 });
 
 Template.entrevistasAdd.helpers({
@@ -45,28 +93,34 @@ Template.entrevistasAdd.helpers({
 });
 
 Template.entrevistasAdd.events({
-
+    'change .form-el' () {
+        $($('[href="#next"]')[0]).click();
+    },
     //Eventos do template de inserção
 
-    'submit form' (event, template) {
+    'click [href="#finish"]' (event, template) {
 
         event.preventDefault();
 
-
         const entrevistaData = {
-            candidato : template.find('[id="candidato"]').value.trim(),
-            bairro: template.find('[id="bairro"]').value.trim(),
-            faixaEtaria: template.find('[id="faixaEtaria"]').value.trim(),
-            faixaDeRenda: template.find('[id="faixaDeRenda"]').value.trim(),
-            sexo: template.find('[name="sexo"]:checked').value.trim(),
+            candidato : $( "input[id^='form-candidato']:checked" ).val().trim(),
+            bairro : $( "input[id^='form-bairro']:checked" ).val().trim(),
+            faixaEtaria : $( "input[id^='form-faixaEtaria']:checked" ).val().trim(),
+            faixaDeRenda : $( "input[id^='form-faixaDeRenda']:checked" ).val().trim(),
+            sexo : $( "input[id^='form-sexo']:checked" ).val().trim()
         };
 
+        console.log(entrevistaData)
         Meteor.call('entrevistas.insert', FlowRouter.getParam('pesquisaId'), entrevistaData, (error) => {
             if (error) {
                 alert(error.reason);
             } else {
 
-                FlowRouter.go('/entrevistasList/' + FlowRouter.getParam('pesquisaId'));
+                Bert.alert( 'Entrevista realizada com sucesso!', 'success', 'growl-top-right');
+                setTimeout(function() {
+                    location.reload();
+                },1000);
+                //FlowRouter.go('/entrevistasList/' + FlowRouter.getParam('pesquisaId'));
             }
         });
 
