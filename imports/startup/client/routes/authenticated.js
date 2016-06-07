@@ -4,6 +4,7 @@ import "../../../ui/authenticated/pesquisas/pesquisas";
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import '../../../ui/authenticated/index';
 import  '../../../ui/authenticated/users';
+import  '../../../ui/layouts/default-test';
 import {Meteor} from 'meteor/meteor';
 
 
@@ -91,7 +92,21 @@ authenticatedRoutes.route( '/entrevistasAdd/:pesquisaId', {
     name: 'entrevistasAdd',
     triggersEnter: [ blockUnauthorizedEntrevistador ],
     action() {
-        BlazeLayout.render( 'default', { yield: 'entrevistasAdd' } );
+        BlazeLayout.render( 'defaultTest', { yield: 'entrevistasAdd' } );
+    }
+});
+authenticatedRoutes.route( '/entrevistasEdit/:_id', {
+    name: 'entrevistasEdit',
+    triggersEnter: [ blockUnauthorizedEntrevistador ],
+    action() {
+        BlazeLayout.render( 'default', { yield: 'entrevistasEdit' } );
+    }
+});
+authenticatedRoutes.route( '/entrevistasView/:_id', {
+    name: 'entrevistasView',
+    triggersEnter: [ blockUnauthorizedEntrevistador ],
+    action() {
+        BlazeLayout.render( 'default', { yield: 'entrevistasView' } );
     }
 });
 authenticatedRoutes.route( '/entrevistasList/:pesquisaId', {

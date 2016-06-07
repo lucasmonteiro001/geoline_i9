@@ -1,0 +1,23 @@
+<template name="defaultTest">
+        {{>bertAlert}}
+
+        {{#if loggingIn}}
+            {{> loading}}
+        {{else}}
+            {{#if authenticated}}
+                {{#unless redirectAuthenticated}}
+                    <style>
+                        body {
+                            background-color: white;
+                        }
+                    </style>
+                    {{> Template.dynamic template=yield}}
+                {{/unless}}
+            {{else}}
+                {{#unless redirectPublic}}
+                    {{> Template.dynamic template=yield}}
+                {{/unless}}
+            {{/if}}
+        {{/if}}
+
+</template>

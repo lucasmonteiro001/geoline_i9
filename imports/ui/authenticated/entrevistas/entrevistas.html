@@ -15,7 +15,7 @@
 </template>
 
 <template name="entrevistasAdd">
-    {{> pageHeading title='Cadastrar entrevistas' }}
+    {{> pageHeading title='Cadastrar entrevistas' home="entrevistas" nome="Listar entrevistas" voltar=true voltarLink=entrevistasList }}
 
     {{#each pesquisa}}
 
@@ -271,7 +271,7 @@
             margin-left: 25% !important;
             overflow: scroll !important;
             height: 18em;
-            background: #eee;
+            background: #FDFCFC;
             display: block;
             margin: 0.5em;
             min-height: 10em;

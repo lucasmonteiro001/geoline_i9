@@ -5,7 +5,6 @@ import { Entrevistas } from '../../../api/entrevistas/entrevistas.js'
 import { Pesquisas } from '../../../api/pesquisas/pesquisas';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 
-
 Template.entrevistasAdd.onCreated(() => {
 
     let template = Template.instance();
@@ -83,6 +82,9 @@ Template.entrevistasAdd.helpers({
     },
     'pesquisa': () => {
         return Template.instance().pesquisa;
+    },
+    'entrevistasList': () => {
+        return FlowRouter.path('entrevistasList') + '/' +  FlowRouter.getParam('pesquisaId');
     }
 });
 
@@ -166,6 +168,7 @@ Template.pesquisasListParaEntrevistadores.helpers({
 });
 
 Template.entrevistasList.onCreated(() => {
+
     // Session.set("pesquisa", FlowRouter.getParam('_id'));
     let template = Template.instance(),
         id = FlowRouter.getParam('pesquisaId');
