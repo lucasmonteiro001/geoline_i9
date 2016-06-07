@@ -17,6 +17,27 @@ Template.entrevistasAdd.onCreated(() => {
 
     template.pesquisa = Pesquisas.find({_id: template.pesquisaId});
 
+    template.estaFechada = new ReactiveVar(false);
+
+    template.autorun(function() {
+        if(template.pesquisa) {
+
+            let pesquisa = template.pesquisa.fetch()[0];
+
+            if(pesquisa) {
+                template.estaFechada.set(pesquisa.status);
+                // se a pesquisa esta fechada
+                if(pesquisa.status === false) {
+                    Bert.alert( 'Pesquisa fechada para novas entrevistas!', 'danger', 'growl-top-right');
+                    FlowRouter.go('/entrevistasList/' + template.pesquisaId);
+                }
+            }
+
+        }
+    });
+
+
+
     setTimeout(function() {
 
         var form = $("#example-form");
