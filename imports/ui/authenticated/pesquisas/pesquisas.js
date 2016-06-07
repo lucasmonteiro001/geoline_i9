@@ -175,6 +175,7 @@ Template.pesquisasView.onCreated(() => {
         let pesquisa = template.pesquisa.fetch()[0];
 
         if(pesquisa) {
+
             template.entrevistadores.set(pesquisa.entrevistadores);
         }
 
@@ -229,9 +230,82 @@ Template.pesquisasView.events({
 
 });
 
-var updateFields = function(template) {
+Template.pesquisasEdit.onCreated(function () {
 
-    if (template.view.isRendered) {
+    let template = Template.instance();
+
+    template.contemEntrevistas = new ReactiveVar(false);
+
+    template.subscribe('Pesquisas', {_id: FlowRouter.getParam('_id')}, {
+
+        onReady: function() {
+
+            template.subscribe("Users", SUB_ENTREVISTADOR.filter, SUB_ENTREVISTADOR.projection,
+                {
+                    onReady: function() {
+
+                        template.autorun(function () {
+
+                            template.pesquisa = Pesquisas.findOne({_id: FlowRouter.getParam('_id')});
+
+                            if(template.pesquisa.entrevistas) {
+
+                                if(template.pesquisa.entrevistas.length > 0) {
+                                    template.contemEntrevistas.set(true);
+                                }
+                                else {
+                                    template.contemEntrevistas.set(false);
+                                }
+
+                            }
+
+                            template.entrevistadoresSelecionados =
+                                Users.find({roles: "entrevistador", _id: { $in : template.pesquisa.entrevistadores}}).fetch();
+
+                            template.entrevistadores = Users.find({roles: "entrevistador"}).fetch();
+
+                            $(".token-input-list-custom").remove();
+
+                            $("#entrevistadores").tokenInput(
+                                template.entrevistadores,
+                                {
+                                    propertyToSearch: "nome",
+                                    theme: "custom",
+                                    hintText: "Pesquise pelo nome",
+                                    noResultsText: "Nenhum resultado encontrado",
+                                    searchingText: "Procurando...",
+                                    minChars: 3,
+                                    resultsFormatter:
+                                        function(item){
+                                            return '<li>' + item.nome + '</li>'
+                                        },
+                                    tokenFormatter:
+                                        function(item){
+                                            return '<li><p>' +  item.nome + '</p></li>'
+                                        },
+                                    preventDuplicates: true,
+                                    tokenValue: "_id",
+                                    allowTabOut: true,
+                                    prePopulate: template.entrevistadoresSelecionados
+                                }
+                            );
+
+                        });
+                    }
+                });
+
+
+        }
+    });
+
+
+});
+
+Template.pesquisasEdit.onRendered(function() {
+
+    let template = Template.instance();
+
+    setTimeout(function(){
 
         document.getElementById("nome").value = template.pesquisa.nome;
 
@@ -269,65 +343,9 @@ var updateFields = function(template) {
             $('.type-zone').tagging("emptyInput");
 
         });
-    }
-};
-
-Template.pesquisasEdit.onCreated(function () {
-
-    let template = Template.instance();
-
-    template.subscribe('Pesquisas', {_id: FlowRouter.getParam('_id')}, {
-
-        onReady: function() {
-
-            template.subscribe("Users", SUB_ENTREVISTADOR.filter, SUB_ENTREVISTADOR.projection,
-                {
-                    onReady: function() {
-
-                        template.autorun(function () {
-
-                            template.pesquisa = Pesquisas.findOne({_id: FlowRouter.getParam('_id')});
-
-                            template.entrevistadoresSelecionados =
-                                Users.find({roles: "entrevistador", _id: { $in : template.pesquisa.entrevistadores}}).fetch();
-
-                            template.entrevistadores = Users.find({roles: "entrevistador"}).fetch();
-
-                            $(".token-input-list-custom").remove();
-
-                            $("#entrevistadores").tokenInput(
-                                template.entrevistadores,
-                                {
-                                    propertyToSearch: "nome",
-                                    theme: "custom",
-                                    hintText: "Pesquise pelo nome",
-                                    noResultsText: "Nenhum resultado encontrado",
-                                    searchingText: "Procurando...",
-                                    minChars: 3,
-                                    resultsFormatter:
-                                        function(item){
-                                            return '<li>' + item.nome + '</li>'
-                                        },
-                                    tokenFormatter:
-                                        function(item){
-                                            return '<li><p>' +  item.nome + '</p></li>'
-                                        },
-                                    preventDuplicates: true,
-                                    tokenValue: "_id",
-                                    allowTabOut: true,
-                                    prePopulate: template.entrevistadoresSelecionados
-                                }
-                            );
-
-                            updateFields(template);
-                        });
-                    }
-                });
 
 
-        }
-    });
-
+    },150)
 
 });
 
@@ -335,9 +353,15 @@ Template.pesquisasEdit.helpers({
     pesquisasID() {
         return FlowRouter.getParam('_id');
     },
-    pesquisass() {
+    candidatos() {
+        return Template.instance().pesquisa.candidatos || [];
+    },
+    bairros() {
+        return Template.instance().pesquisa.bairros || [];
+    },
+    contemEntrevistas() {
 
-        updateFields(Template.instance());
+        return Template.instance().contemEntrevistas.get();
     }
 });
 
@@ -358,6 +382,31 @@ Template.pesquisasEdit.events({
             dataFim             = $('[name="dataFim"]').val(),
             candidatos          = $('#candidatos').tagging( "getTags" ),
             bairros             = $('#bairros').tagging( "getTags" );
+
+        // se nao eh possivel alterar os candidatos
+        if(!candidatos) {
+
+            candidatos = [];
+
+            let arrayCandidatos = document.getElementsByName('candidato');
+
+            $.each(arrayCandidatos, function(i, val) {
+                candidatos.push($(val).text());
+            })
+        }
+
+        // se nao eh possivel alterar os candidatos
+        if(!bairros) {
+
+            bairros = [];
+
+            let arrayBairro = document.getElementsByName('bairro');
+
+            $.each(arrayBairro, function(i, val) {
+                bairros.push($(val).text());
+            })
+        }
+
 
 
         // valor booleano para saber se a pesquisa esta aberta ou fechada
