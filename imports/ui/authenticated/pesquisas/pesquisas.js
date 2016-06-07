@@ -5,9 +5,7 @@ import { Pesquisas } from '../../../api/pesquisas/pesquisas.js';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import {Users} from '../../../api/users/users';
 import { ReactiveVar } from 'meteor/reactive-var';
-import '../../../vendors/js/taggingJS-master/tagging.min';
-import '../../../vendors/js/loopj-jquery-tokeninput-201d2d1/src/jquery.tokeninput';
-import '../../../vendors/js/loopj-jquery-tokeninput-201d2d1/styles/token-input-custom.css';
+
 
 let template;
 
@@ -36,23 +34,11 @@ Template.pesquisas.onCreated(() => {
 
     template.subscribe('Pesquisas');
 
-
     template.pesquisas = () => {
         return Pesquisas.find();
     };
 
 });
-
-
-
-Template.pesquisas.helpers({
-
-});
-
-//=============== FIM PESQUISAS ==================//
-
-
-//=============== INICIO PESQUISAS ADD ==================//
 
 Template.pesquisasAdd.onCreated(function () {
 
@@ -103,14 +89,12 @@ Template.pesquisasAdd.onRendered(() => {
     $tag = bairros[0];
 
     $tag_box.on( "remove:after", function ( el, text, tagging ) {
-
         // limpa a zona de insercao
         $('.type-zone').val("");
 
     });
 
     $tag.on( "remove:after", function ( el, text, tagging ) {
-
         // limpa a zona de insercao
         $('.type-zone').val("");
 
@@ -119,12 +103,9 @@ Template.pesquisasAdd.onRendered(() => {
 
 Template.pesquisasAdd.events({
 
-    //Eventos do template de inserção
-
     'submit form' (event, template) {
 
         template = Template.instance();
-
 
         event.preventDefault();
 
@@ -172,43 +153,8 @@ Template.pesquisasAdd.events({
                 FlowRouter.go('pesquisas');
             }
         });
-
-
-
     }
-
-
-
-
 });
-
-//=============== FIM PESQUISAS ADD ==================//
-
-
-//=============== INICIO PESQUISAS VIEW ==================//
-
-var updateSpans = function(template) {
-
-    let id = FlowRouter.getParam('_id');
-
-    const pesquisass = Pesquisas.findOne({_id: id});
-
-    if (pesquisass && template.view.isRendered) {
-
-        // template.find('[id="nome"]').textContent = pesquisass.nome;
-        template.find('[id="status"]').textContent = (pesquisass.status) ? "Aberta" : "Fechada";
-        template.find('[id="numMaxEntrevistados"]').textContent = pesquisass.numMaxEntrevistados;
-        template.find('[id="entrevistadores"]').textContent =
-            pesquisass.entrevistadores.map(function(val) {
-                let entrevistador = Users.findOne({_id: val});
-                return entrevistador.nome;
-            }).join(", ");
-        template.find('[id="candidatos"]').textContent = pesquisass.candidatos.join(", ");
-        template.find('[id="bairros"]').textContent = pesquisass.bairros.join(", ");
-
-    }
-
-}
 
 Template.pesquisasView.onCreated(() => {
 
@@ -233,14 +179,6 @@ Template.pesquisasView.onCreated(() => {
         }
 
     })
-
-});
-
-Template.pesquisasView.onRendered(() => {
-    let id = FlowRouter.getParam('_id');
-    Template.instance().pesquisasNome = "";
-    Template.instance().pesquisasID = id;
-    // updateSpans(Template.instance());
 
 });
 
@@ -273,8 +211,6 @@ Template.pesquisasView.helpers({
 
 Template.pesquisasView.events({
 
-    //Eventos do template de inserção
-
     'click #linkExcluir' (event, template) {
 
         var sel = event.target;
@@ -293,13 +229,7 @@ Template.pesquisasView.events({
 
 });
 
-//=============== FIM PESQUISAS VIEW ==================//
-
-
-//=============== INICIO PESQUISAS EDIT ==================//
-
 var updateFields = function(template) {
-
 
     if (template.view.isRendered) {
 
@@ -356,8 +286,6 @@ Template.pesquisasEdit.onCreated(function () {
 
                         template.autorun(function () {
 
-                            console.log("Rodou o this!");
-
                             template.pesquisa = Pesquisas.findOne({_id: FlowRouter.getParam('_id')});
 
                             template.entrevistadoresSelecionados =
@@ -403,11 +331,6 @@ Template.pesquisasEdit.onCreated(function () {
 
 });
 
-Template.pesquisasEdit.onRendered(() => {
-    // updateFields(Template.instance());
-
-});
-
 Template.pesquisasEdit.helpers({
     pesquisasID() {
         return FlowRouter.getParam('_id');
@@ -420,14 +343,11 @@ Template.pesquisasEdit.helpers({
 
 Template.pesquisasEdit.events({
 
-    //Eventos do template de inserção
-
     'submit form' (event, template) {
 
         event.preventDefault();
 
         template = Template.instance();
-
 
         let id                  = FlowRouter.getParam('_id'),
             nome                = $('[name="nome"]').val(),
@@ -442,7 +362,6 @@ Template.pesquisasEdit.events({
 
         // valor booleano para saber se a pesquisa esta aberta ou fechada
         (status === "aberta") ? (status = true) : (status = false);
-
 
         //TODO consertar as datas
         dataInicio = new Date();
@@ -480,11 +399,6 @@ Template.pesquisasEdit.events({
     }
 
 });
-
-//=============== FIM PESQUISAS EDIT ==================//
-
-
-//=============== INICIO PESQUISAS LIST ==================//
 
 Template.pesquisasList.onCreated(() => {
 
@@ -533,10 +447,6 @@ Template.pesquisasList.helpers({
         };
     },
 });
-
-//=============== FIM PESQUISAS LIST ==================//
-
-//===========
 
 Template.perfisRelatorio.onCreated(() => {
 
@@ -634,31 +544,31 @@ Template.perfisRelatorio.helpers({
 
             if(pesquisa) {
 
+                if(pesquisa.perfis) {
 
-                pesquisa.perfis.forEach(function (perfil) {
+                    pesquisa.perfis.forEach(function (perfil) {
 
-                    let key = `faixaEtaria:${perfil.faixaEtaria};faixaDeRenda:${perfil.faixaDeRenda};sexo:${perfil.sexo};meta:${perfil.quantidade}`;
+                        let key = `faixaEtaria:${perfil.faixaEtaria};faixaDeRenda:${perfil.faixaDeRenda};sexo:${perfil.sexo};meta:${perfil.quantidade}`;
 
-                    // se ha alguma entrevista relacionada ao perfil
-                    if (perfisImpressao[key]) {
-                        perfilFinal.push({
-                            faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
-                            sexo: perfil.sexo, meta: perfil.quantidade, quantidade: perfisImpressao[key].quantidade
-                        });
+                        // se ha alguma entrevista relacionada ao perfil
+                        if (perfisImpressao[key]) {
+                            perfilFinal.push({
+                                faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
+                                sexo: perfil.sexo, meta: perfil.quantidade, quantidade: perfisImpressao[key].quantidade
+                            });
 
-                        votosRegistrados += perfisImpressao[key].quantidade;
-                    }
-                    // se nao existe entrevista, tudo eh zero
-                    else {
-                        perfilFinal.push({
-                            faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
-                            sexo: perfil.sexo, meta: perfil.quantidade, quantidade: 0
-                        });
-                    }
+                            votosRegistrados += perfisImpressao[key].quantidade;
+                        }
+                        // se nao existe entrevista, tudo eh zero
+                        else {
+                            perfilFinal.push({
+                                faixaEtaria: perfil.faixaEtaria, faixaDeRenda: perfil.faixaDeRenda,
+                                sexo: perfil.sexo, meta: perfil.quantidade, quantidade: 0
+                            });
+                        }
 
-                });
-
-                console.log(pesquisa.entrevistas);
+                    });
+                }
 
                 // verifica se exsite entrevistas
                 if(pesquisa.entrevistas) {

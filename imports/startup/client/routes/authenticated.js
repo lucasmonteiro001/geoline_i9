@@ -94,20 +94,6 @@ authenticatedRoutes.route( '/entrevistasAdd/:pesquisaId', {
         BlazeLayout.render( 'default', { yield: 'entrevistasAdd' } );
     }
 });
-authenticatedRoutes.route( '/entrevistasEdit/:_id', {
-    name: 'entrevistasEdit',
-    triggersEnter: [ blockUnauthorizedEntrevistador ],
-    action() {
-        BlazeLayout.render( 'default', { yield: 'entrevistasEdit' } );
-    }
-});
-authenticatedRoutes.route( '/entrevistasView/:_id', {
-    name: 'entrevistasView',
-    triggersEnter: [ blockUnauthorizedEntrevistador ],
-    action() {
-        BlazeLayout.render( 'default', { yield: 'entrevistasView' } );
-    }
-});
 authenticatedRoutes.route( '/entrevistasList/:pesquisaId', {
     name: 'entrevistasList',
     triggersEnter: [ blockUnauthorizedEntrevistador ],
