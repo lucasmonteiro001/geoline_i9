@@ -48,6 +48,8 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
+    "eslint": "^2.11.1",
+    "eslint-plugin-meteor": "^3.6.0",
     "jquery": "^2.2.3",
     "jquery-validation": "^1.15.0",
     "meteor-node-stubs": "^0.2.3",

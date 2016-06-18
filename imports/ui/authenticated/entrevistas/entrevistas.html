@@ -5,7 +5,7 @@
     <div class="wrapper wrapper-content white-bg animated fadeInRight">
 
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-md-12">
                 {{> pesquisasListParaEntrevistadores}}
             </div>
         </div>
@@ -15,108 +15,128 @@
 </template>
 
 <template name="entrevistasAdd">
-    {{> pageHeading title='Cadastrar entrevistas' home="entrevistas" nome="Listar entrevistas" voltar=true voltarLink=entrevistasList }}
 
-    {{#each pesquisa}}
+    <div class="row">
+        <div class="col-md-12">
 
-        <form id="example-form" action="#">
-            <div>
-                <h3>Candidato</h3>
-                <section>
-                    <div class="form-group">
-                        <div class="conteudo-wizard">
-                            {{#each candidatos}}
-                                <div class="radio">
-                                    <input name="candidatoX" id="form-candidato-{{this}}" class="form-el" type="radio"  value="{{this}}">
-                                    <label for="form-candidato-{{this}}">{{this}}</label>
-                                </div>
-                            {{/each}}
-                        </div>
-                    </div>
-
-                </section>
-                <h3>Bairro</h3>
-                <section>
-                    <div class="form-group">
-                        <div class="col-md-10">
-                            {{#each bairros}}
-                                <div class="radio">
-                                    <input name="bairroX" id="form-bairro-{{this}}" class="form-el" type="radio"  value="{{this}}">
-                                    <label for="form-bairro-{{this}}">{{this}}</label>
-                                </div>
-                            {{/each}}
-                        </div>
-                    </div>
-                </section>
-                <h3>Faixa etária</h3>
-                <section>
-                    <div class="form-group">
-                        <div class="col-md-10">
-                            <div class="radio">
-                                <input name="faixaEtariaX" class="form-el" id="form-faixaEtaria-15-19" type="radio"  value="15 - 19">
-                                <label for="form-faixaEtaria-15-19">
-                                    15 - 19
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <input name="faixaEtariaX" class="form-el" id="form-faixaEtaria-20-24" type="radio"  value="20 - 24">
-                                <label for="form-faixaEtaria-20-24">20 - 24</label>
-                            </div>
-                            <div class="radio">
-                                <input name="faixaEtariaX" class="form-el" id="form-faixaEtaria-25-29" type="radio" value="25 - 29">
-                                <label for="form-faixaEtaria-25-29">25 - 29</label>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <h3>Faixa de renda</h3>
-                <section>
-
-                        <div class="radio">
-                            <input name="faixaDeRendaX" id="form-faixaDeRenda-1" class="form-el" type="radio"  value="1">
-                            <label for="form-faixaDeRenda-1">Até 1 salário mínimo</label>
-                        </div>
-                        <div class="radio">
-                            <input name="faixaDeRendaX" id="form-faixaDeRenda-2" class="form-el" type="radio"  value="2">
-                            <label for="form-faixaDeRenda-2">Até 2 salários mínimos</label>
-                        </div>
-                        <div class="radio">
-                            <input name="faixaDeRendaX" id="form-faixaDeRenda-5" class="form-el" type="radio"  value="5">
-                            <label for="form-faixaDeRenda-5">Até 5 salários mínimos</label>
-                        </div>
-                        <div class="radio">
-                            <input name="faixaDeRendaX" id="form-faixaDeRenda-5+" class="form-el" type="radio"  value="5+">
-                            <label for="form-faixaDeRenda-5+">Acima de 5 salários mínimos</label>
-                        </div>
-
-
-                </section>
-                <h3>Sexo</h3>
-                <section>
-                    <div class="col-md-10">
-
-                        <div class="radio">
-                            <input name="sexoX" class="form-el" id="form-sexo-feminino" type="radio"  value="feminino">
-                            <label for="form-sexo-feminino">Feminino</label>
-                        </div>
-
-                        <div class="radio">
-                            <input name="sexoX" class="form-el" id="form-sexo-masculino" type="radio"  value="masculino">
-                            <label for="form-sexo-masculino">Masculino</label>
-                        </div>
-
-                    </div>
-                </section>
-                <h3>Confirmação</h3>
-                <section>
-                    <div class="confirmar">
-
-                    </div>
-                </section>
+            <div class="row" style="padding-bottom: 30px">
+                <h2>
+                    <a href="{{voltarLink}}">
+                        <i class="fa fa-arrow-left" aria-hidden="true" style="color: #2184BE;font-size: xx-large;padding-right: 10px"></i>
+                    </a>
+                    Pesquisa: {{pesquisaNome}}</h2>
             </div>
-        </form>
 
-    {{/each}}
+            <div class="row">
+                {{#each pesquisa}}
+
+                    <form action="#" style="display: none">
+                        <div>
+                            <h3>Selecione um candidato</h3>
+                            <section>
+                                <div class="form-group">
+
+                                    <div class="conteudo-wizard">
+                                        {{#each candidatos}}
+                                            <div class="radio">
+                                                <input name="candidato" id="form-candidato-{{this}}" class="form-el" type="radio"  value="{{this}}">
+                                                <label for="form-candidato-{{this}}">{{this}}</label>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                </div>
+
+                            </section>
+                            <h3>Selecione um bairro</h3>
+                            <section>
+                                <div class="form-group">
+                                    <div class="conteudo-wizard">
+                                        {{#each bairros}}
+                                            <div class="radio">
+                                                <input name="bairro" id="form-bairro-{{this}}" class="form-el" type="radio"  value="{{this}}">
+                                                <label for="form-bairro-{{this}}">{{this}}</label>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+
+                                </div>
+                            </section>
+                            <h3>Selecione uma faixa etária</h3>
+                            <section>
+                                <div class="conteudo-wizard">
+                                    <div class="form-group">
+                                        <div class="radio">
+                                            <input name="faixaEtaria" class="form-el" id="form-faixaEtaria-15-19" type="radio"  value="15 - 19">
+                                            <label for="form-faixaEtaria-15-19">
+                                                15 - 19
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <input name="faixaEtaria" class="form-el" id="form-faixaEtaria-20-24" type="radio"  value="20 - 24">
+                                            <label for="form-faixaEtaria-20-24">20 - 24</label>
+                                        </div>
+                                        <div class="radio">
+                                            <input name="faixaEtaria" class="form-el" id="form-faixaEtaria-25-29" type="radio" value="25 - 29">
+                                            <label for="form-faixaEtaria-25-29">25 - 29</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <h3>Selecione uma faixa de renda</h3>
+                            <section>
+                                <div class="conteudo-wizard">
+                                    <div class="radio">
+                                        <input name="faixaDeRenda" id="form-faixaDeRenda-1" class="form-el" type="radio"  value="1">
+                                        <label for="form-faixaDeRenda-1">Até 1 salário mínimo</label>
+                                    </div>
+                                    <div class="radio">
+                                        <input name="faixaDeRenda" id="form-faixaDeRenda-2" class="form-el" type="radio"  value="2">
+                                        <label for="form-faixaDeRenda-2">Até 2 salários mínimos</label>
+                                    </div>
+                                    <div class="radio">
+                                        <input name="faixaDeRenda" id="form-faixaDeRenda-5" class="form-el" type="radio"  value="5">
+                                        <label for="form-faixaDeRenda-5">Até 5 salários mínimos</label>
+                                    </div>
+                                    <div class="radio">
+                                        <input name="faixaDeRenda" id="form-faixaDeRenda-5+" class="form-el" type="radio"  value="5+">
+                                        <label for="form-faixaDeRenda-5+">Acima de 5 salários mínimos</label>
+                                    </div>
+                                </div>
+
+                            </section>
+                            <h3>Selecione um sexo</h3>
+                            <section>
+                                <div class="conteudo-wizard">
+                                    <div class="radio">
+                                        <input name="sexo" class="form-el" id="form-sexo-feminino" type="radio"  value="feminino">
+                                        <label for="form-sexo-feminino">Feminino</label>
+                                    </div>
+
+                                    <div class="radio">
+                                        <input name="sexo" class="form-el" id="form-sexo-masculino" type="radio"  value="masculino">
+                                        <label for="form-sexo-masculino">Masculino</label>
+                                    </div>
+                                </div>
+                            </section>
+                            <h3>Confirmação dos dados</h3>
+                            <section>
+                                <div class="conteudo-wizard">
+                                    <div class="confirmar">
+
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </form>
+
+                {{/each}}
+            </div>
+
+
+        </div>
+    </div>
+
+
 
 
     <style>
@@ -128,7 +148,10 @@
         }
 
         .conteudo-wizard {
-            /*text-align: center;*/
+            /*width: 50%;*/
+            /*margin-left: 40%;*/
+            font-size: x-large;
+            text-align: left;
         }
         .wizard,
         .tabcontrol
@@ -267,10 +290,9 @@
 
         .wizard > .content
         {
-            width: 50% !important;
-            margin-left: 25% !important;
             overflow: scroll !important;
-            height: 18em;
+            text-align: center;
+            height: 26em;
             background: #FDFCFC;
             display: block;
             margin: 0.5em;
@@ -295,9 +317,9 @@
         .wizard > .content > .body
         {
             float: left;
+            text-align: center;
+            width: 100%;
             position: absolute;
-            width: 50%;
-            margin-left: 25%;
             height: 95%;
             padding: 2.5%;
         }
@@ -693,7 +715,7 @@
 
 
 <template name="pesquisasListParaEntrevistadores">
-    {{> reactiveTable settings=settings}}
+        {{> reactiveTable settings=settings}}
 </template>
 
 <template name="pesquisasTmplParaEntrevistadores">

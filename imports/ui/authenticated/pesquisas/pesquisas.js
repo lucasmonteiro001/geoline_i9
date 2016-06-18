@@ -99,6 +99,19 @@ Template.pesquisasAdd.onRendered(() => {
         $('.type-zone').val("");
 
     });
+
+    $("form").validate({
+        // errorLabelContainer: $(".error"),
+        // wrapper: 'li'
+        errorPlacement: function(error, element) {
+            // Append error within linked label
+            $( element )
+                .closest( "form" )
+                .find( "label[for='" + element.attr( "name" ) + "']" )
+                .append( error );
+        },
+        errorElement: "span",
+    });
 });
 
 Template.pesquisasAdd.events({
@@ -141,6 +154,8 @@ Template.pesquisasAdd.events({
             dataInicio: dataInicio,
             dataFim: dataFim
         }
+
+        confirm("Tem certeza?")
 
         Meteor.call('pesquisas.insert', pesquisasData, (error) => {
 

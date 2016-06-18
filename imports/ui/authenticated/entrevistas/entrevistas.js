@@ -36,65 +36,6 @@ Template.entrevistasAdd.onCreated(() => {
         }
     });
 
-
-
-    setTimeout(function() {
-
-        var form = $("#example-form");
-
-        form.children("div").steps({
-            headerTag: "h3",
-            bodyTag: "section",
-            transitionEffect: "slideLeft",
-            onStepChanged: function (event, currentIndex) {
-
-                // se o formulario esta na ultima pagina
-                if($('.last.current').length === 1) {
-
-                    let candidato = $( "input[id^='form-candidato']:checked" ).val(),
-                        bairro = $( "input[id^='form-bairro']:checked" ).val(),
-                        faixaEtaria = $( "input[id^='form-faixaEtaria']:checked" ).val(),
-                        faixaDeRenda = $( "input[id^='form-faixaDeRenda']:checked" ).val(),
-                        sexo = $( "input[id^='form-sexo']:checked" ).val();
-
-                    $('.confirmar').html(`Os dados abaixo estão corretos?<br><br>Candidato: ${candidato}<br><br>Bairro: ${bairro}<br><br>Faixa etária: ${faixaEtaria}<br><br>Faixa de renda: ${faixaDeRenda}<br><br>Sexo: ${sexo}`)
-
-                }
-
-            },
-            onStepChanging: function (event, currentIndex, newIndex)
-            {
-                // Allways allow step back to the previous step even if the current step is not valid!
-                if (currentIndex > newIndex)
-                {
-                    return true;
-                }
-
-                form.validate().settings.ignore = ":disabled,:hidden";
-                return form.valid();
-            },
-            onFinishing: function (event, currentIndex)
-            {
-                form.validate().settings.ignore = ":disabled";
-                return form.valid();
-            },
-            onFinished: function (event, currentIndex)
-            {
-                event.preventDefault();
-            },
-            labels: {
-                cancel: "Cancelar",
-                current: "passo atual:",
-                pagination: "Paginação",
-                finish: "Salvar e enviar",
-                next: "Próximo",
-                previous: "Anterior",
-                loading: "Carregando ..."
-            }
-        });
-
-    }, 100);
-
 });
 
 Template.entrevistasAdd.helpers({
@@ -104,12 +45,34 @@ Template.entrevistasAdd.helpers({
     'pesquisa': () => {
         return Template.instance().pesquisa;
     },
+    'pesquisaNome': () => {
+        if(Template.instance().pesquisa.fetch().length > 0 ) {
+            return Template.instance().pesquisa.fetch()[0].nome;
+        }
+        return 'Não carregada ainda';
+    },
     'entrevistasList': () => {
         return FlowRouter.path('entrevistasList') + '/' +  FlowRouter.getParam('pesquisaId');
     }
 });
 
 Template.entrevistasAdd.events({
+    'click .fa.fa-arrow-left' (event) {
+        // se algum dado ja foi preenchido
+        if($('input:checked').length > 0) {
+
+            // se o usuario cancelar, permanece na mesma pagina
+            if(!confirm('Deseja cancelar a entrevista atual e voltar para a página de entrevistas?')) {
+                event.preventDefault();
+            }
+            else {
+                FlowRouter.go('/entrevistasList/' +  FlowRouter.getParam('pesquisaId'));
+            }
+        }
+        else {
+            FlowRouter.go('/entrevistasList/' +  FlowRouter.getParam('pesquisaId'));
+        }
+    },
     'change .form-el' () {
         $($('[href="#next"]')[0]).click();
     },
@@ -146,6 +109,83 @@ Template.entrevistasAdd.events({
 
 
 
+
+});
+
+Template.entrevistasAdd.onRendered(() => {
+
+    $('form').validate({
+        rules: {
+            'candidato' : 'required',
+            'bairro' : 'required',
+            'faixaEtaria' : 'required',
+            'faixaDeRenda' : 'required',
+            'sexo' : 'required'
+        }
+    });
+
+    let renderForm = (function() {
+
+        var form = $('form');
+
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slide",
+            stepsOrientation: "vertical",
+            enableKeyNavigation: false,
+            onStepChanged: function (event, currentIndex) {
+
+                // se o formulario esta na ultima pagina
+                if($('.last.current').length === 1) {
+
+                    let candidato = $( "input[id^='form-candidato']:checked" ).val(),
+                        bairro = $( "input[id^='form-bairro']:checked" ).val(),
+                        faixaEtaria = $( "input[id^='form-faixaEtaria']:checked" ).val(),
+                        faixaDeRenda = $( "input[id^='form-faixaDeRenda']:checked" ).val(),
+                        sexo = $( "input[id^='form-sexo']:checked" ).val();
+
+                    $('.confirmar').html(`Candidato: ${candidato}<br>Bairro: ${bairro}<br>Faixa etária: ${faixaEtaria}<br>Faixa de renda: ${faixaDeRenda}<br>Sexo: ${sexo}`)
+
+                }
+
+            },
+            onStepChanging: function (event, currentIndex, newIndex)
+            {
+                // Allways allow step back to the previous step even if the current step is not valid!
+                if (currentIndex > newIndex)
+                {
+                    return true;
+                }
+
+                form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinishing: function (event, currentIndex)
+            {
+                form.validate().settings.ignore = ":disabled";
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex)
+            {
+                event.preventDefault();
+            },
+            labels: {
+                cancel: "Cancelar",
+                current: "passo atual:",
+                pagination: "Paginação",
+                finish: "Salvar e enviar",
+                next: "Próximo",
+                previous: "Anterior",
+                loading: "Carregando ..."
+            }
+        });
+    });
+
+    setTimeout(function() {
+        renderForm();
+        $('form').css("display", "block")
+    }, 1000);
 
 });
 

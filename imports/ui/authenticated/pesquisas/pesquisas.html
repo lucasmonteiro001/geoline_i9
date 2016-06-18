@@ -81,6 +81,14 @@
         .type-zone:focus {
             outline: none;
         }
+
+        span.error{
+            color: red;
+            margin-left: 5px;
+            font-size: 85%;
+            font-style: italic;
+        }
+
     </style>
 
     <div class="wrapper wrapper-content white-bg animated fadeInRight" style="padding-bottom:10px;">
@@ -91,21 +99,27 @@
 
                         <div class="form-group">
                             <label for="nome">Nome da pesquisa</label>
-                            <input type="text" name="nome" class="form-control" placeholder="Nome da pesquisa">
+                            <input type="text" name="nome" class="form-control" placeholder="Nome da pesquisa"
+                                   data-rule-required="true" data-msg-required="(Forneça um nome para a pesquisa)"
+                                   data-rule-minlength="10" data-msg-minlength="(Tamanho mínimo de 10 letras)">
                         </div>
                         <div class="form-group">
                             <label for="status">Status</label>
                             <br>
                             <label class="radio-inline">
-                                <input type="radio" value="aberta" name="status">Aberta
+                                <input type="radio" value="aberta" name="status" data-rule-required="true"
+                                       data-msg-required="(Selecione se a pesquisa está aberta ou fechada)">Aberta
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" value="fechada" name="status">Fechada
+                                <input type="radio" value="fechada" name="status" data-rule-required="true"
+                                       data-msg-required="(Selecione se a pesquisa está aberta ou fechada)">Fechada
                             </label>
                         </div>
                         <div class="form-group">
                             <label for="numMaxEntrevistados"><span class="pull-left">Numero maximo de entrevistados</span></label>
-                            <input type="number" name="numMaxEntrevistados" class="form-control" placeholder="0" min="0">
+                            <input type="number" name="numMaxEntrevistados" class="form-control" placeholder="0"
+                                   data-rule-required="true" data-msg-required="(Selecione o número máximo de entrevistados)"
+                                   data-rule-min="0" data-msg-min="(Selecione pelo menos 1 entrevistado)">
                         </div>
                         <div class="form-group">
                             <label for="entrevistadores">Entrevistadores associados</label>
@@ -124,17 +138,18 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="dataInicio"><span class="pull-left">Data de inicio</span></label>
-                                    <input type="date" name="dataInicio" class="form-control">
+                                    <input type="date" name="dataInicio" class="form-control"
+                                           data-rule-required="true" data-msg-required="(Selecione a data de início da pesquisa)">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="dataFim"><span class="pull-left">Data de fim</span></label>
-                                    <input type="date" name="dataFim" class="form-control">
+                                    <input type="date" name="dataFim" class="form-control"
+                                           data-rule-required="true" data-msg-required="(Selecione a data de fim da pesquisa)">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
 
-                        </div>
+                        <div class="error"></div>
 
                     </div>
                 </div>
@@ -187,7 +202,7 @@
                             <label class="col-md-2 control-label" for="nome">Pesquisa</label>
                             <div class="col-md-10">
                                 {{#if contemEntrevistas}}
-                                    <input disabled type="text" id="nome" name="nome" class="form-control" >
+                                    <input disabled  type="text" id="nome" name="nome" class="form-control" >
                                 {{else}}
                                     <input type="text" id="nome" name="nome" class="form-control" >
                                 {{/if}}
